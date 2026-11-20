@@ -1,0 +1,965 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Neuro Patient Care Review v2</title>
+<style>
+:root{color-scheme:light;
+--t:#37352f;--muted:#787774;--line:#e9e9e7;
+--c-gray:#787774;--c-brown:#9f6b53;--c-orange:#d9730d;--c-yellow:#b7881f;--c-green:#448361;--c-blue:#337ea9;--c-purple:#9065b0;--c-pink:#c14c8a;--c-red:#d44c47;
+--bg-gray:#f1f1ef;--bg-brown:#f4eeee;--bg-orange:#fbecdd;--bg-yellow:#fbf3db;--bg-green:#edf3ec;--bg-blue:#e7f3f8;--bg-purple:#f4f0f7;--bg-pink:#f9eef3;--bg-red:#fdebec;}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font:16px/1.6 ui-sans-serif,-apple-system,"Segoe UI",Helvetica,Arial,sans-serif;color:var(--t);background:#fff}
+.wrap{display:flex;max-width:1200px;margin:0 auto}
+nav{position:sticky;top:0;align-self:flex-start;width:270px;height:100vh;overflow:auto;padding:24px 12px 40px 20px;border-right:1px solid var(--line);font-size:13.5px}
+nav a{display:block;color:var(--muted);text-decoration:none;padding:2px 6px;border-radius:4px}
+nav a:hover{background:var(--bg-gray);color:var(--t)}
+nav a.h1{color:var(--t);font-weight:600;margin-top:8px}
+nav a.h2{padding-left:18px}
+main{flex:1;min-width:0;padding:32px 48px 120px;max-width:900px}
+.toolbar{position:sticky;top:0;z-index:5;background:#fff;display:flex;gap:8px;flex-wrap:wrap;padding:10px 0;border-bottom:1px solid var(--line);margin-bottom:12px}
+.toolbar button{font:inherit;font-size:13.5px;border:1px solid var(--line);background:#fff;border-radius:6px;padding:5px 11px;cursor:pointer;color:var(--t)}
+.toolbar button:hover{background:var(--bg-gray)}
+.toolbar button.on{background:var(--t);color:#fff;border-color:var(--t)}
+h1.title{font-size:38px;margin:8px 0 4px;line-height:1.2}
+.sub{color:var(--muted);margin:0 0 18px}
+h1{font-size:28px;margin:44px 0 6px;line-height:1.3;scroll-margin-top:60px}
+h2{font-size:22px;margin:28px 0 6px;scroll-margin-top:60px}
+h3{font-size:18px;margin:20px 0 4px}
+hr{border:0;border-top:1px solid var(--line);margin:28px 0}
+ul,ol{margin:4px 0;padding-left:24px}
+ul.nb{list-style:disc}
+li{margin:3px 0}
+li.gray,li.brown,li.orange,li.yellow,li.green,li.blue,li.purple,li.pink,li.red{padding:4px 10px 4px 8px;border-radius:4px;margin:6px 0}
+.gray{background:var(--bg-gray)}.brown{background:var(--bg-brown)}.orange{background:var(--bg-orange)}.yellow{background:var(--bg-yellow)}.green{background:var(--bg-green)}.blue{background:var(--bg-blue)}.purple{background:var(--bg-purple)}.pink{background:var(--bg-pink)}.red{background:var(--bg-red)}
+b.g{color:var(--c-green)}b.b{color:var(--c-blue)}b.p{color:var(--c-purple)}b.o{color:var(--c-orange)}b.r{color:var(--c-red)}b.n{color:var(--c-brown)}b.k{color:var(--c-pink)}b.y{color:var(--c-yellow)}
+details.tg{border-radius:4px;margin:5px 0;padding:3px 10px}
+details.tg>summary{cursor:pointer;list-style:none;padding:2px 0 2px 20px;position:relative;font-weight:600}
+details.tg>summary::-webkit-details-marker{display:none}
+details.tg>summary::before{content:"▶";position:absolute;left:0;top:5px;font-size:11px;color:var(--muted);transition:transform .15s}
+details.tg[open]>summary::before{transform:rotate(90deg)}
+details.tg>div{padding:2px 0 6px 20px}
+.callout{display:flex;gap:10px;padding:12px 14px;border-radius:6px;margin:10px 0}
+.callout .ic{font-size:20px;line-height:1.3}
+table{border-collapse:collapse;width:100%;margin:10px 0;font-size:14.5px}
+th,td{border:1px solid var(--line);padding:6px 9px;vertical-align:top;text-align:left}
+th{background:var(--bg-gray);font-weight:600}
+td:first-child{font-weight:600}
+.tw{overflow-x:auto}
+.add{color:var(--muted);font-size:.85em;font-weight:600}
+main{overflow-wrap:break-word}
+.fix{color:var(--c-red);font-size:.85em;font-weight:600;white-space:nowrap}
+.arrow{font-weight:700}
+.src{color:var(--muted);font-size:13px}
+/* No-highlight mode */
+body.nohl b.g,body.nohl b.b,body.nohl b.p,body.nohl b.o,body.nohl b.r,body.nohl b.n,body.nohl b.k,body.nohl b.y{color:inherit}
+body.nohl .gray,body.nohl .brown,body.nohl .orange,body.nohl .yellow,body.nohl .green,body.nohl .blue,body.nohl .purple,body.nohl .pink,body.nohl .red{background:transparent}
+body.nohl li[class]{padding:0;margin:3px 0}
+/* Mind map overlay */
+#mmo{position:fixed;inset:0;z-index:50;background:#fbfbfa;display:none;flex-direction:column}
+#mmo.show{display:flex}
+#mmbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;padding:10px 14px;border-bottom:1px solid var(--line);background:#fff}
+#mmbar button{font:inherit;font-size:13.5px;border:1px solid var(--line);background:#fff;border-radius:6px;padding:5px 11px;cursor:pointer;color:var(--t)}
+#mmbar button:hover{background:var(--bg-gray)}
+#mmbar .ttl{font-weight:700;margin-right:8px}
+#mmbar input{font:inherit;font-size:13.5px;border:1px solid var(--line);border-radius:6px;padding:5px 9px;width:190px}
+#mmsvg{flex:1;width:100%;cursor:grab}
+#mmsvg:active{cursor:grabbing}
+#mminfo{display:flex;gap:12px;align-items:center;padding:9px 14px;border-top:1px solid var(--line);background:#fff;font-size:14px;min-height:46px}
+#mminfo .path{color:var(--muted);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#mminfo button{font:inherit;font-size:13.5px;border:0;background:var(--t);color:#fff;border-radius:6px;padding:6px 12px;cursor:pointer}
+#mminfo button[disabled]{opacity:.3;cursor:default}
+.mnode circle{stroke-width:2;cursor:pointer}
+.mnode text{font-size:13px;cursor:pointer;paint-order:stroke;stroke:#fbfbfa;stroke-width:4px;stroke-linejoin:round}
+.mnode.sel text{font-weight:700}
+.mnode.hit text{fill:#d44c47;font-weight:700}
+.mlink{fill:none;stroke-opacity:.45;stroke-width:1.6}
+/* Sidebar slide in/out */
+nav{flex:0 0 270px;transition:margin-left .25s ease,opacity .2s ease,transform .25s ease;background:#fff}
+body.sbhide nav{margin-left:-270px;opacity:0;pointer-events:none}
+body.sbhide main{margin:0 auto}
+#sbb{display:none}
+nav .navhead{display:flex;justify-content:space-between;align-items:center;font-weight:700;margin:0 6px 6px}
+nav .navhead button{border:0;background:none;font-size:18px;cursor:pointer;color:var(--muted);padding:0 4px;line-height:1}
+
+/* Phone / tablet */
+@media (max-width:860px){
+  body{font-size:15.5px}
+  nav{position:fixed;top:0;left:0;z-index:40;height:100vh;height:100dvh;width:82vw;max-width:310px;transform:translateX(-105%);box-shadow:2px 0 18px rgba(0,0,0,.15);margin-left:0!important;opacity:1!important;pointer-events:auto!important;font-size:15px;padding-top:18px}
+  nav a{padding:6px 8px}
+  body.sbopen nav{transform:translateX(0)}
+  #sbb{position:fixed;inset:0;z-index:39;background:rgba(0,0,0,.3)}
+  body.sbopen #sbb{display:block}
+  body.sbopen{overflow:hidden}
+  main{padding:0 14px 90px}
+  .toolbar{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;margin:0 -14px 12px;padding:8px 14px;scrollbar-width:none}
+  .toolbar::-webkit-scrollbar{display:none}
+  .toolbar button{flex:0 0 auto;padding:7px 12px}
+  h1.title{font-size:28px}
+  h1{font-size:22px;margin-top:34px}
+  h2{font-size:19px}
+  h3{font-size:16.5px}
+  ul,ol{padding-left:20px}
+  li.gray,li.brown,li.orange,li.yellow,li.green,li.blue,li.purple,li.pink,li.red{padding:5px 8px}
+  details.tg{padding:4px 8px}
+  details.tg>summary{padding:4px 0 4px 20px}
+  details.tg>div{padding-left:8px}
+  .callout{padding:10px 11px}
+  table{font-size:13.5px}
+  .tw table{min-width:520px}
+  th,td{padding:5px 7px}
+  /* mind map */
+  #mmbar{gap:6px;padding:8px 10px}
+  #mmbar .ttl{display:none}
+  #mmbar button{padding:6px 10px;font-size:13px}
+  #mmbar input{order:10;flex:1 1 100%;width:auto}
+  #mmbar .sp{display:none}
+  #mminfo{flex-wrap:wrap;gap:8px;padding:8px 10px;font-size:13px}
+  #mminfo .path{white-space:normal;flex:1 1 100%}
+  #mminfo button{flex:1 1 100%;padding:9px}
+}
+#mmsvg{touch-action:none}
+
+/* ===== Calm mode: one color per topic ===== */
+body:not(.nohl) .zone li.gray,body:not(.nohl) .zone li.brown,body:not(.nohl) .zone li.orange,body:not(.nohl) .zone li.yellow,body:not(.nohl) .zone li.green,body:not(.nohl) .zone li.blue,body:not(.nohl) .zone li.purple,body:not(.nohl) .zone li.pink,body:not(.nohl) .zone li.red{background:var(--pb)}
+body:not(.nohl) .zone b.g,body:not(.nohl) .zone b.b,body:not(.nohl) .zone b.p,body:not(.nohl) .zone b.o,body:not(.nohl) .zone b.r,body:not(.nohl) .zone b.n,body:not(.nohl) .zone b.k,body:not(.nohl) .zone b.y{color:var(--pc)}
+body:not(.nohl) details.tg.zone{background:var(--pb)}
+body:not(.nohl) .callout.zone{background:var(--pb);border-left:4px solid var(--pc)}
+body:not(.nohl) .zone th{background:var(--pb)}
+h1.topic{border-left:5px solid var(--pc);padding-left:12px}
+nav a.h1[data-dot]::before{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:7px;vertical-align:1px;background:var(--pc)}
+
+.ver{font-size:.45em;font-weight:700;color:#fff;background:#448361;border-radius:6px;padding:2px 8px;vertical-align:middle}
+h1 small{font-size:.5em;color:var(--muted);font-weight:500;margin-left:6px}
+.pt{background:#f7f6f3;border-left:4px solid #37352f;border-radius:4px;padding:10px 14px;margin:8px 0 6px}
+h2.ph{display:flex;align-items:center;gap:8px;flex-wrap:wrap;border-left:5px solid;padding-left:10px;border-radius:2px}
+h2.ph.a{border-color:var(--c-blue)} h2.ph.p{border-color:var(--c-green)} h2.ph.i{border-color:var(--c-purple)} h2.ph.e{border-color:var(--c-orange)} h2.ph.q{border-color:var(--c-yellow)} h2.ph.x{border-color:var(--c-red)}
+.star{display:inline-block;background:#fdecc8;color:#7a5a12;font-size:.78em;font-weight:700;border-radius:4px;padding:0 6px;margin-right:3px;white-space:nowrap}
+.cite{display:inline-block;background:#f1f1ef;color:#787774;font-size:.72em;font-weight:600;border-radius:10px;padding:0 7px;margin-left:3px;vertical-align:1px;white-space:nowrap}
+.ask{display:inline-block;background:#fbe4e4;color:#b13a35;font-size:.82em;font-weight:700;border-radius:4px;padding:0 7px}
+table.prio td:first-child{white-space:nowrap}
+table.prio td:last-child{color:var(--muted);font-size:.9em;white-space:nowrap}
+/* quiz */
+.qhead{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin:4px 0 8px;color:var(--muted);font-size:14px}
+.qhead button{font:inherit;font-size:13px;border:1px solid var(--line);background:#fff;border-radius:6px;padding:3px 10px;cursor:pointer}
+.qc{border:1px solid var(--line);border-radius:8px;padding:12px 14px;margin:10px 0;background:#fff}
+.qc .qn{font-weight:600;margin-bottom:8px}
+.qc .qn span{color:var(--muted);font-weight:700;margin-right:4px}
+.qc button.op{display:block;width:100%;text-align:left;font:inherit;font-size:15px;border:1px solid var(--line);background:#fafaf9;border-radius:6px;padding:8px 11px;margin:6px 0;cursor:pointer;color:var(--t)}
+.qc button.op:hover:not([disabled]){background:var(--bg-blue);border-color:#b9d9ea}
+.qc button.op[disabled]{cursor:default}
+.qc button.op.ok{background:var(--bg-green);border-color:#9cc59a;font-weight:600}
+.qc button.op.bad{background:var(--bg-red);border-color:#e9a8a5}
+.qc .fb{display:none;margin-top:8px;padding:9px 11px;border-radius:6px;font-size:14.5px}
+.qc.done .fb{display:block}
+.qc .fb.ok{background:var(--bg-green)} .qc .fb.bad{background:var(--bg-red)}
+body.nohl .star{background:transparent;color:inherit}
+
+/* ===== One color per nursing-process step ===== */
+.zone-a{--pc:#337ea9;--pb:#e7f3f8}
+.zone-p{--pc:#448361;--pb:#edf3ec}
+.zone-i{--pc:#9065b0;--pb:#f4f0f7}
+.zone-e{--pc:#d9730d;--pb:#fbecdd}
+.zone-q{--pc:#8a6d00;--pb:#fdf6d0}
+.zone-x{--pc:#c14c8a;--pb:#f9eef3}
+h2.ph.a{border-color:#337ea9} h2.ph.p{border-color:#448361} h2.ph.i{border-color:#9065b0} h2.ph.e{border-color:#d9730d}
+h2.ph.q{border-color:#e0b100} h2.ph.x{border-color:#c14c8a}
+body:not(.nohl) .zone li.gray,body:not(.nohl) .zone li.brown,body:not(.nohl) .zone li.orange,body:not(.nohl) .zone li.yellow,body:not(.nohl) .zone li.green,body:not(.nohl) .zone li.blue,body:not(.nohl) .zone li.purple,body:not(.nohl) .zone li.pink,body:not(.nohl) .zone li.red{background:var(--pb)}
+body:not(.nohl) .zone b.g,body:not(.nohl) .zone b.b,body:not(.nohl) .zone b.p,body:not(.nohl) .zone b.o,body:not(.nohl) .zone b.r,body:not(.nohl) .zone b.n,body:not(.nohl) .zone b.k,body:not(.nohl) .zone b.y{color:var(--pc)}
+body:not(.nohl) details.tg.zone{background:var(--pb)}
+body:not(.nohl) .callout.zone{background:var(--pb);border-left:4px solid var(--pc)}
+body:not(.nohl) .zone th{background:var(--pb)}
+/* calmer markers */
+.star{background:#fff;color:#37352f;border:1px solid #37352f;font-size:.7em;letter-spacing:.03em;text-transform:uppercase;padding:0 5px}
+.ask{background:#fff;color:#b13a35;border:1px solid #e3b3b0}
+.key{display:inline-block;padding:0 8px;border-radius:4px;font-weight:600;font-size:.9em;margin:1px 2px}
+.k-a.key{background:#e7f3f8;color:#337ea9}.k-p.key{background:#edf3ec;color:#448361}.k-i.key{background:#f4f0f7;color:#9065b0}.k-e.key{background:#fbecdd;color:#d9730d}
+nav a.h2[class*="k-"]::before{content:"";display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:7px;vertical-align:1px;background:#c9c8c4}
+nav a.h2.k-a::before{background:#337ea9}nav a.h2.k-p::before{background:#448361}nav a.h2.k-i::before{background:#9065b0}nav a.h2.k-e::before{background:#d9730d}
+
+nav a.h2.k-q::before{background:#e0b100}nav a.h2.k-x::before{background:#c14c8a}
+.k-q.key{background:#fdf6d0;color:#8a6d00}.k-x.key{background:#f9eef3;color:#c14c8a}
+/* Bedside Check cards in pink */
+body:not(.nohl) .quiz.zone .qc{border-left:4px solid #c14c8a}
+body:not(.nohl) .quiz.zone .qn span{color:#c14c8a}
+body:not(.nohl) .quiz.zone button.op:hover:not([disabled]){background:#f9eef3;border-color:#e8bcd3}
+
+main h1,main h2,main h3,main li,main details,main .callout,main .quiz{scroll-margin-top:64px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<nav id="toc"></nav>
+<div id="sbb"></div>
+<main>
+<div class="toolbar">
+<button id="sb" aria-label="Toggle contents sidebar">☰ Contents</button>
+<button id="mm" style="font-weight:600">Mind Map</button>
+<button id="hl" class="on">Highlight: ON</button>
+<button id="ex">Expand all toggles</button>
+<button id="co">Collapse all toggles</button>
+<a href="v1/" style="flex:0 0 auto;font-size:13.5px;border:1px solid #e9e9e7;border-radius:6px;padding:5px 11px;color:#37352f;text-decoration:none;background:#f7f6f3">Switch to v1 · topic review →</a>
+</div>
+<h1 class="title">Neuro Patient Care Review <span class="ver">v2</span></h1>
+<p class="sub">Built only from the 9 course files. Each condition follows the professor's nursing process: <b>Assess → Plan → Implement → Evaluate</b>. Every item shows its slide number, e.g. <span class="cite">S17</span>.</p>
+
+<div class="callout gray"><div>
+<b>How to use:</b> picture yourself at the bedside. For each patient, work through the cues to <b>assess</b>, the <b>goals</b>, what you <b>do</b>, and how you <b>know it worked</b>. Then try the <b> Bedside Check</b> questions.<br>
+<span class="star">Prof</span> marks the professor's own emphasis: words like FIRST, LATE, priority, emergency, NEVER, most common. These are the most likely test points.<br>
+<span class="ask">Ask in class</span> marks a question the slides ask but don't answer. No outside answer is added.<br>
+<b>Color = step of the nursing process</b>, the same in every condition: <span class="key k-a">Assess</span> <span class="key k-p">Plan / Goals</span> <span class="key k-i">Implement</span> <span class="key k-e">Evaluate</span> <span class="key k-q">Professor's Questions</span> <span class="key k-x">Bedside Check</span>.
+</div></div>
+
+<!-- ============ PRIORITIES ============ -->
+<h1 id="prio" data-c>Professor's Priorities</h1>
+<p class="src">Every point the slides mark as priority, first, late, emergency, most common, or never, collected in one place.</p>
+<div class="tw"><table class="prio">
+<tr><th>Topic</th><th>The slide says</th><th>Source</th></tr>
+<tr><td>Stroke</td><td>Priority? <b>PREVENTION!!</b></td><td>Stroke S3</td></tr>
+<tr><td>Stroke</td><td>TIA is a warning sign… <b>A STROKE IS COMING!!!</b></td><td>Stroke S4</td></tr>
+<tr><td>Stroke</td><td><b>Time of onset</b> is more important patient history</td><td>Stroke S17</td></tr>
+<tr><td>Stroke</td><td>Motor function is the <b>most obvious effect</b> of stroke</td><td>Stroke S11</td></tr>
+<tr><td>Stroke</td><td>Management of the respiratory system is a <b>nursing priority</b></td><td>Stroke S21</td></tr>
+<tr><td>Stroke</td><td>Speech, comprehension, and language deficits are the <b>most difficult problem</b> for the patient and family</td><td>Stroke S23</td></tr>
+<tr><td>Stroke</td><td>Constipation is the <b>most common bowel problem</b></td><td>Stroke S22</td></tr>
+<tr><td>Stroke</td><td>Ischemic stroke: <b>most common</b> cause of stroke</td><td>Stroke S5</td></tr>
+<tr><td>Stroke</td><td>Anticoagulants and platelet inhibitors are <b>contraindicated</b> (hemorrhagic)</td><td>Stroke S19</td></tr>
+<tr><td>IICP</td><td>Change in level of consciousness: <b>FIRST Sign!</b></td><td>IICP S8</td></tr>
+<tr><td>IICP</td><td>Change in vital signs (Cushing's Triad): <b>LATE sign (oh no!)</b></td><td>IICP S8</td></tr>
+<tr><td>IICP</td><td>Cushing's triad = <b>Neurologic Emergency!!!</b></td><td>IICP S4</td></tr>
+<tr><td>IICP</td><td>Respiratory Function: <b>Priority</b></td><td>IICP S13</td></tr>
+<tr><td>IICP</td><td><b>No Lumbar puncture: contraindicated</b></td><td>IICP S11</td></tr>
+<tr><td>Meningitis</td><td>Bacterial meningitis is a <b>medical emergency</b></td><td>Men S2</td></tr>
+<tr><td>Meningitis</td><td><b>Early antibiotic treatment is critical</b></td><td>Men S5</td></tr>
+<tr><td>Seizures</td><td>Protect from injury (<b>NEVER restrain</b>)</td><td>Seiz S11</td></tr>
+<tr><td>Seizures</td><td>Prevention of recurring seizures is the <b>major goal</b> in treatment</td><td>Seiz S12</td></tr>
+<tr><td>Seizures</td><td>Effect on lifestyle is the <b>most common complication</b></td><td>Seiz S14</td></tr>
+<tr><td>Seizures</td><td>Patients who lose consciousness are at <b>greatest risk</b></td><td>Seiz S14</td></tr>
+<tr><td>Headache</td><td>Moderate to severe migraine: <b>triptans first line</b> of therapy</td><td>HA S9</td></tr>
+<tr><td>Parkinson's</td><td>Levodopa with Carbidopa (Sinemet): <b>Primary treatment</b></td><td>PD S7</td></tr>
+<tr><td>Parkinson's</td><td><b>Dementia occurs in 70%</b> of patients</td><td>PD S8</td></tr>
+<tr><td>MS</td><td>Vision changes <b>often first sign</b></td><td>MS S4</td></tr>
+<tr><td>MS</td><td>Immunomodulator drugs: <b>often used first</b></td><td>MS S7</td></tr>
+<tr><td>Alzheimer's</td><td><b>Not a normal part of aging</b> · Age = <b>greatest</b> risk factor</td><td>Dem S5</td></tr>
+<tr><td>Delirium</td><td><b>Avoid restraints</b></td><td>Dem S4</td></tr>
+</table></div>
+
+<details class="tg gray"><summary>Slide images that didn't come through: review these in the original decks</summary><div>
+IICP S9 · IICP S10 (Abnormal Respiratory Patterns of Coma) · IICP S15 · Stroke S8 (NIHSS) · Stroke S9 (Right-Brain vs Left-Brain Stroke) · Stroke S24 · Dementia S6 (Effect of AD on Brain) · Dementia S8 (Retrogenesis) · MS/MG S9 (title graphic for the MG section)
+</div></details>
+
+<!-- ============ TOOLKIT ============ -->
+<h1 id="tool" data-c>Neuro Assessment Toolkit</h1>
+<div class="pt">The assessment tools used across every neuro patient: cranial nerve exam, LOC, and the stroke scales.</div>
+
+<h2 class="ph a">Cranial Nerve Exam <span class="cite">CN chart</span></h2>
+<ul class="nb"><li class="blue">IICP: vital sign changes come from pressure on the <b class="b">thalamus, hypothalamus</b> (<b class="o">body temperature</b>), <b class="p">pons and medulla</b> (<b class="g">BP, HR, RR</b>)</li></ul>
+<details class="tg purple"><summary>I – Olfactory: smell</summary><div><b>Test:</b> coffee or soap; patient closes eyes and one nostril, gently inhales; repeat other nostril</div></details>
+<details class="tg purple"><summary>II – Optic: central &amp; peripheral vision</summary><div><b>Test:</b> central → count fingers held 6 inches in front; peripheral → confrontation test<br><b class="r">IICP:</b> blurred vision, diplopia, changes in movements</div></details>
+<details class="tg purple"><summary>III – Oculomotor: pupillary constriction</summary><div><b>Test:</b> dim lights, bring penlight from periphery, check both pupils constrict; follow finger through 6 cardinal fields of gaze (also CN VI)<br><b class="r">IICP:</b> <b>ipsilateral dilation of pupil</b>, sluggish or no response to light, inability to move upward, <b>ptosis</b></div></details>
+<details class="tg purple"><summary>IV – Trochlear: moves eye down and toward nose</summary><div><b>Test:</b> follow finger as you move it toward the nose</div></details>
+<details class="tg purple"><summary>V – Trigeminal: face sensation; temporal &amp; masseter</summary><div><b>Test:</b> soft and dull object on forehead, cheek, jaw; open mouth and assess jaw strength</div></details>
+<details class="tg purple"><summary>VI – Abducens: eye movement side to side</summary><div><b>Test:</b> look toward each ear; 6 cardinal fields; observe for nystagmus or twitching</div></details>
+<details class="tg purple"><summary>VII – Facial: facial movement &amp; expression</summary><div><b>Test:</b> wrinkle forehead, close eyes, smile, pucker, show teeth, puff cheeks → assess <b>symmetry</b></div></details>
+<details class="tg purple"><summary>VIII – Acoustic: hearing</summary><div><b>Test:</b> whispered voice test</div></details>
+<details class="tg purple"><summary>IX – Glossopharyngeal: tongue and throat</summary><div><b>Test:</b> gag reflex, swallow, taste on back of tongue</div></details>
+<details class="tg purple"><summary>X – Vagus: tongue and throat</summary><div><b>Test:</b> gag reflex; say "AHHH" → uvula midline, palate rises</div></details>
+<details class="tg purple"><summary>XI – Spinal accessory: neck &amp; shoulder movement</summary><div><b>Test:</b> shrug shoulders; turn head side to side</div></details>
+<details class="tg purple"><summary>XII – Hypoglossal: tongue</summary><div><b>Test:</b> stick out tongue → midline</div></details>
+
+<h2 class="ph a">Scales the Slides Use</h2>
+<ul class="nb">
+<li class="yellow"><b>Glasgow Coma Scale</b>: level of consciousness in ↑ICP <span class="cite">IICP S8</span></li>
+<li class="yellow"><b>Cincinnati scale / FAST</b>: prehospital stroke screen <span class="cite">Stroke S7</span></li>
+<li class="yellow"><b>NIHSS</b>: primary tool to evaluate and document neuro status in acute stroke; measures severity; predicts short- &amp; long-term outcome; scored initially to compare treatment effect <span class="cite">Stroke S7–8</span></li>
+<li class="yellow"><b>Confusion Assessment Method</b>: delirium <span class="cite">Dem S3</span></li>
+</ul>
+
+<!-- ============ IICP ============ -->
+<h1 id="iicp" data-c>Increased Intracranial Pressure <small>Neuro IICP.pptx</small></h1>
+<div class="pt"><b>Your patient:</b> ICP has risen from a change in <b>brain tissue, blood, or CSF</b>. Under Monro-Kellie, if one increases, another must decrease to maintain ICP <span class="cite">S2</span></div>
+
+<h2 class="ph a">Assess</h2>
+<ul class="nb">
+<li class="red"><span class="star">Prof</span> <b class="r">Change in LOC: FIRST sign!</b> (Glasgow Coma Scale) <span class="cite">S8</span></li>
+<li class="red"><span class="star">Prof</span> <b class="r">Change in vital signs (Cushing's triad): LATE sign (oh no!)</b> <span class="cite">S8</span></li>
+<li>ABCs · headache · vomiting · decreased motor function (strength, response, hemiplegia) · <b>posturing</b>: decerebrate, decorticate · abnormal respiratory patterns · <b>ocular signs</b> (dilated, unilateral, fixed) <span class="cite">S8</span></li>
+</ul>
+<div class="callout red"><div><span class="star">Prof</span> <b class="r">Cushing's triad = Neurologic Emergency!!!</b> <span class="cite">S4</span>
+<ol><li>Systolic hypertension with <b>widening pulse pressure</b></li><li><b>Bradycardia</b> with bounding pulse</li><li><b>Irregular, decreased respirations</b></li></ol></div></div>
+<details class="tg purple"><summary>Know the numbers: normal ICP, elevated ICP, CPP</summary><div>Normal ICP = <b>5–15 mm Hg</b> · elevated if <b>&gt; 20 mm Hg sustained</b> <span class="cite">S4</span><br><b>CPP = MAP − ICP</b>; cerebral blood flow is the main mechanism for autoregulation <span class="cite">S3</span><br>Brain uses about <b>20% of O₂</b> and <b>25% of glucose</b> <span class="cite">S3</span></div></details>
+<details class="tg purple"><summary>Stages of ↑ICP (4)</summary><div>1 Total compensation · 2 ↓ compensation, risk for ↑ICP · 3 Failing compensation, clinical signs (Cushing's triad) · 4 <b>Herniation imminent → death</b> <span class="cite">S4</span></div></details>
+<details class="tg purple"><summary>Why is this patient at risk? Causes</summary><div><b>Affecting blood flow:</b> mass lesion, head injury (surgery), infections, vascular insult, toxic or metabolic encephalopathic conditions <span class="cite">S5</span><br><b>Cerebral edema:</b> vasogenic, cytotoxic, interstitial <span class="cite">S5</span><br><b>Brain injury:</b> primary (at the time: car accident impact, blunt force) vs secondary (hours to days: <b>hypoxia, ischemia, hypotension, edema, ↑ICP</b>) <span class="cite">S6</span><br>Head injury terms: skull fracture, concussion (diffuse), diffuse axonal injury, contusion (focal); epidural, subdural, intracerebral hematoma <span class="cite">S7</span></div></details>
+<details class="tg purple"><summary>Diagnostics to anticipate</summary><div>CT · MRI · EEG · ICP measurement · cerebral O₂ monitor (LICOX, Neurovent, jugular venous bulb) · Doppler US (transcranial Doppler: noninvasive, monitors cerebrovascular resistance and blood flow) <span class="cite">S11, S16</span><br><span class="star">Prof</span> <b class="r">No lumbar puncture: contraindicated</b> <span class="cite">S11</span></div></details>
+
+<h2 class="ph p">Plan: Goals</h2>
+<ul class="nb"><li class="green">Maintain a <b>patent airway</b> · <b>ICP within normal limits</b> · normal fluid &amp; electrolyte balance · prevent complications of immobility and decreased LOC <span class="cite">S12</span></li></ul>
+
+<h2 class="ph i">Implement</h2>
+<h3>Nursing: optimize ICP <span class="cite">S13</span></h3>
+<ul class="nb">
+<li class="blue"><span class="star">Prof</span> <b class="b">Respiratory function: Priority</b> · maintain ventilator support</li>
+<li class="green">Keep body temperature <b class="g">96.8–98.6 °F (36–37 °C)</b></li>
+<li class="yellow"><b class="o">HOB 30° (not higher or lower)</b> · head in neutral alignment · prevent extreme neck flexion · turn slowly</li>
+<li class="red"><b class="r">Avoid:</b> coughing, straining, Valsalva, hip flexion</li>
+<li>Pain &amp; anxiety management · fluid &amp; electrolyte balance · minimize abdominal distention (interferes with respiratory effort; may need NG)</li>
+<li class="purple">Quiet, soothing environment · <b class="p">do not do everything at one time</b></li>
+<li>Minimize immobility complications · protection from self-injury · psychologic considerations · sedation</li>
+</ul>
+<h3>ICP monitoring: ventriculostomy <span class="cite">S14</span></h3>
+<ul class="nb"><li class="pink">Prevent and monitor for <b class="r">infection</b> · measure as <b>mean pressure</b> · record waveform (normal, elevated, plateau) · evaluate changes with patient condition</li></ul>
+<details class="tg purple"><summary>Reading looks wrong? Causes of inaccurate readings (5)</summary><div>CSF leaks · obstruction in catheter / kinks in tubing · differences in height of bolt/transducer · incorrect height of drainage system · bubbles/air in tubing <span class="cite">S14</span></div></details>
+<h3>Collaborative <span class="cite">S17–18</span></h3>
+<ul class="nb">
+<li class="blue">Treat underlying cause · <b>PaO₂ &gt; 100 mm Hg</b> · <b>PaCO₂ 35–45 mm Hg</b></li>
+<li class="green">Nutrition: hypermetabolic &amp; hypercatabolic → ↑ need for glucose · enteral or parenteral · <b>early feeding (within 3 days of injury)</b></li>
+<li class="orange">Keep normovolemic: <b class="o">IV 0.9% NaCl preferred</b> over D5W or 0.45% NaCl</li>
+<li class="gray">Nursing note: avoiding <b>hypoxia, hypoglycemia, and acidotic state</b> helps control ICP</li>
+</ul>
+<details class="tg purple"><summary>Mannitol (Osmitrol): what do you monitor?</summary><div>Plasma expansion, osmotic effect → <b>monitor fluid and electrolyte status</b> <span class="cite">S18</span></div></details>
+<details class="tg purple"><summary>Hypertonic saline: what do you monitor?</summary><div>Moves water out of cells into blood → <b>monitor BP and serum sodium</b> <span class="cite">S18</span></div></details>
+<details class="tg purple"><summary>Corticosteroids: for which edema?</summary><div><b>Vasogenic</b> edema <span class="cite">S18</span></div></details>
+<details class="tg purple"><summary>Drugs for complications / risks of ↑ICP</summary><div>Antiseizure · antipyretics · sedatives · analgesics · barbiturates <span class="cite">S18</span></div></details>
+
+<h2 class="ph e">Evaluate</h2>
+<ul class="nb"><li class="green">ICP and CPP within normal parameters · <b>no serious increases in ICP during or following care activities</b> · no complications of immobility <span class="cite">S19</span></li></ul>
+
+<h2 class="ph x">Bedside Check</h2>
+<div class="quiz" data-q="iicp"></div>
+
+<!-- ============ STROKE ============ -->
+<h1 id="stroke" data-c>Stroke <small>Stroke.pptx</small></h1>
+<div class="pt"><b>Your patient:</b> ischemia or hemorrhage into the brain has caused death of brain cells (brain attack, CVA) <span class="cite">S2</span></div>
+
+<h2 class="ph a">Assess</h2>
+<h3>Who is at risk? <span class="star">Prof · Priority? PREVENTION!!</span> <span class="cite">S3</span></h3>
+<ul class="nb">
+<li class="green"><b class="g">Modifiable:</b> hypertension, heart disease, diabetes, smoking, obesity, sleep apnea, metabolic syndrome, lack of exercise, poor diet, drug and alcohol use</li>
+<li class="brown"><b class="n">Non-modifiable:</b> age, gender, ethnicity or race, family history, history of TIA</li>
+</ul>
+<h3>TIA <span class="cite">S4</span></h3>
+<ul class="nb"><li class="pink"><span class="star">Prof</span> <b class="r">TIA is a warning sign… A STROKE IS COMING!!!</b> · temporary blockage, ischemia <b>without infarction</b> · stroke symptoms typically lasting <b>&lt; 1 hour</b> · <b>1/3 progress</b> to ischemic stroke</li></ul>
+<h3>Recognize the stroke <span class="cite">S7</span></h3>
+<ul class="nb">
+<li class="yellow"><b>FAST:</b> <b class="g">F</b>ace drooping (ask to smile) · <b class="b">A</b>rm weakness (raise both arms, does one drift?) · <b class="p">S</b>peech slurred · <b class="r">T</b>ime to call 911</li>
+<li class="red">Watch for <b>SUDDEN:</b> numbness or weakness (esp. one side) · confusion, trouble speaking or understanding · trouble seeing · trouble walking, dizziness, loss of balance · severe headache with no known cause</li>
+<li class="blue"><b>NIHSS:</b> scored initially; measures severity; compares treatment effect <span class="cite">S7–8</span></li>
+</ul>
+<details class="tg purple"><summary>Which type? Ischemic vs hemorrhagic</summary><div>
+<b class="b">Ischemic: most common</b>. <b>Thrombus (60%)</b>: associated with HTN and DM, TIA often precedes, recurrence common. <b>Embolism</b>: mostly from heart conditions (<b>afib</b>), could be fat or air <span class="cite">S5</span><br>
+<b class="r">Hemorrhagic: ~13%</b>. <b>Intracerebral</b>: HTN most common cause, occurs during activity, often first a <b>severe headache with N/V</b>. <b>Subarachnoid</b>: often a ruptured cerebral aneurysm; <b>cerebral vasospasm</b> common (ICU 14 days to monitor) <span class="cite">S6</span></div></details>
+<details class="tg purple"><summary>Symptoms by artery involved</summary><div><b>Anterior cerebral:</b> contralateral motor/sensory, sucking or rooting reflex, rigidity, gait problems, loss of proprioception and fine touch<br><b>Middle cerebral:</b> dominant side → aphasia, motor and sensory, hemianopsia; non-dominant → neglect, motor and sensory, hemianopsia<br><b>Posterior cerebral:</b> hemianopsia, motor, pain, visual hallucinations<br><b>Vertebral:</b> cranial nerve, diplopia, dizziness, N/V, dysarthria, dysphasia, coma <span class="cite">S10</span></div></details>
+<details class="tg purple"><summary>Motor: <span class="star">Prof · most obvious effect</span></summary><div>Impaired mobility, respiratory function, swallowing and speech, <b>gag reflex</b>, self-care. Loss of skilled voluntary movement, akinesia, altered tone and reflexes (hyporeflexia → hyperreflexia)<br>Initial <b>flaccidity</b> (days to several weeks) → then <b>spasticity</b> <span class="cite">S11</span></div></details>
+<details class="tg purple"><summary>Communication: aphasia vs dysarthria</summary><div>Aphasia = stroke damages the <b>dominant hemisphere</b> and affects language. <b>Receptive</b> = loss of comprehension · <b>Expressive</b> = loss of production · <b>Global</b> = total inability · <b>Nonfluent (Broca's)</b> = minimal, slow speech · <b>Fluent (Wernicke's)</b> = speech present, little meaning<br><b>Dysarthria</b> = disturbance in <b>muscular control</b> of speech (pronunciation, articulation, phonation) <span class="cite">S12</span></div></details>
+<details class="tg purple"><summary>Affect, intellect, spatial-perceptual, elimination</summary><div>
+<b>Affect:</b> difficulty controlling emotions; exaggerated or unpredictable <span class="cite">S13</span><br>
+<b>Intellect:</b> memory &amp; judgment impaired; <b>Left brain: cautious · Right brain: impulsive</b> <span class="cite">S13</span><br>
+<b>Spatial-perceptual:</b> more likely with <b>right-side</b> stroke: incorrect perception of self and illness, unilateral neglect, agnosia, apraxia <span class="cite">S14</span><br>
+<b>Elimination:</b> problems mostly initial and temporary; one hemisphere affected → prognosis for normal bladder function excellent <span class="cite">S14</span></div></details>
+<details class="tg purple"><summary>Diagnostics to anticipate</summary><div>CT · CTA · MRI/MRA · angiography · ultrasound · LP-CSF · EKG · glucose · CBC · PT/PTT <span class="cite">S15</span></div></details>
+
+<h2 class="ph p">Plan: Goals <span class="cite">S16</span></h2>
+<ul class="nb"><li class="green">Developed collaboratively with patient, caregiver, family. The patient will: maintain stable or improved <b>LOC</b> · attain maximum physical functioning · maximize self-care · maintain stable body functions · maximize communication · maintain adequate nutrition · <b>avoid complications</b> · maintain effective personal and family coping</li></ul>
+
+<h2 class="ph i">Implement</h2>
+<h3>Emergency (ischemic) <span class="cite">S17</span></h3>
+<ul class="nb">
+<li class="red"><span class="star">Prof</span> <b class="r">Time of onset</b> is more important patient history · transport to stroke center · meet <b>door-to-needle</b> guidelines</li>
+<li class="blue"><b>ABCs → Stroke Alert → IV/BP management → CT scan to rule out hemorrhage → check blood glucose (treat if hypoglycemic) → other labs → thrombolytic → keep NPO</b></li>
+<li class="purple">Monitor closely: increasing neuro deficit (NIHSS) · increased ICP (interventions that improve venous drainage) · fluid &amp; electrolytes · glycemic control · Stroke Core Measures</li>
+<li class="yellow">Elevated BP is common right after a stroke. <span class="ask">Ask in class: "why?"</span></li>
+</ul>
+<div class="callout orange"><div><b>BP numbers in the slides</b><br>
+• Ischemic: <b>only reduce if &gt; 220/120</b> <span class="cite">S17</span><br>
+• Giving fibrinolytics: reduce to <b>&lt; 185/110</b>; monitor closely 24 hrs, <b>SBP &lt; 185</b> <span class="cite">S17–18</span><br>
+• Hemorrhagic: goal <b>SBP &lt; 160</b> <span class="cite">S19</span><br>
+• Prevention: <b>SBP &lt; 140</b> <span class="cite">S26</span></div></div>
+<details class="tg purple"><summary>tPA: time window, who can't get it, what follows</summary><div><b>IV: 3–4.5 hours from onset · intra-arterial: up to 6 hours</b><br><b class="r">Will not give if history of:</b> GI bleed, coagulation disorders, head trauma, major surgery, internal bleeding<br>Monitor closely 24 hours · <b>aspirin 24–48 hours after</b> · anticoagulants after stabilized · statins · endovascular therapy also an option <span class="cite">S18</span></div></details>
+<h3>Hemorrhagic <span class="cite">S19</span></h3>
+<ul class="nb">
+<li class="red">Initial management of <b>hypertension</b> is the main focus (oral and IV agents) → <b>SBP &lt; 160</b></li>
+<li class="pink"><span class="star">Prof</span> <b class="r">Anticoagulants and platelet inhibitors are contraindicated</b></li>
+<li>Surgery: evacuate hematoma · clipping or coiling of aneurysm · hyperdynamic therapy (hypertension, hypervolemia) · ventriculostomy</li>
+<li class="blue"><b>Calcium channel blockers: treat vasospasm</b> · seizure prophylaxis is situation-specific</li>
+</ul>
+<h3>Post-acute care by system <span class="cite">S20–25</span></h3>
+<ul class="nb"><li class="green">After stable for <b>12–24 hours</b>, care shifts from <b>preserving life → lessening disability</b> <span class="cite">S20</span></li></ul>
+<details class="tg purple"><summary>Respiratory: <span class="star">Prof · nursing priority</span></summary><div>Frequent assessment · O₂ · oral care · suction · <b>prevent aspiration: swallow eval to rule out dysphagia</b> <span class="cite">S21</span></div></details>
+<details class="tg purple"><summary>Neurologic</summary><div>Continued assessments: NIHSS, LOC, ICP <span class="cite">S21</span></div></details>
+<details class="tg purple"><summary>Cardiovascular</summary><div>Fluid homeostasis (dehydration vs overload) · vital signs · <b>VTE prophylaxis</b>: keep patient moving, ROM, SCD/TED hose, low molecular weight heparin <span class="cite">S21</span></div></details>
+<details class="tg purple"><summary>Musculoskeletal: prevent contractures</summary><div>ROM · <b>trochanter roll</b> at hip (prevents external rotation) · <b>hand cones</b> · posterior leg splints, footboards, high-top tennis shoes (prevent <b>foot drop</b>) · arm supports with slings and lap boards · <b class="r">avoid pulling the patient by the arm</b> (shoulder displacement) <span class="cite">S21</span></div></details>
+<details class="tg purple"><summary>Skin</summary><div>Position changes, special mattresses, wheelchair cushions · <b>position on the weak or paralyzed side for only 30 minutes</b> · skin hygiene · emollients · early mobility <span class="cite">S22</span></div></details>
+<details class="tg purple"><summary>Nutrition</summary><div>Quick assessment · IV fluids initially, may need enteral · <b>NPO until swallow evaluation</b> · physical supports for self-feeding <span class="cite">S22</span></div></details>
+<details class="tg purple"><summary>Bowel &amp; bladder</summary><div><span class="star">Prof</span> <b>Constipation = most common bowel problem</b> → stool softeners or fiber, physical activity, bowel retraining · bladder: incontinence in acute stage → bladder retraining · <b class="r">avoid indwelling catheters</b> <span class="cite">S22</span></div></details>
+<details class="tg purple"><summary>Talking with a patient who has aphasia</summary><div><span class="star">Prof</span> most difficult problem for patient and family · <b>simple, short sentences · assess for understanding · yes/no questions · normal volume/tone · give time for response · decrease stimuli · use gestures</b> <span class="cite">S23</span></div></details>
+<details class="tg purple"><summary>Neglect &amp; homonymous hemianopsia</summary><div>Break tasks into simple steps · environmental controls · nonslip socks · educate about one-side neglect (may forget to shave half of face) · <b>arrange environment with things in the visual field, including food → then teach to scan</b> <span class="cite">S23</span></div></details>
+<details class="tg purple"><summary>Coping</summary><div>Atypical emotional responses: distract · explain to patient and family that outbursts may occur · calm environment · <b>avoid shaming or scolding</b> · explain what happened, diagnosis, procedures · active listening · include family in goal planning · family conferences · social services referral <span class="cite">S25</span></div></details>
+<h3>Teaching: prevention <span class="cite">S26</span></h3>
+<ul class="nb"><li class="green">Decreased sodium · normal body weight · low saturated fat · limit alcohol · <b>SBP &lt; 140</b> · <b>exercise 150 min/week</b> · no smoking · control diabetes · take cardiac medications · left atrial appendage occlusion · antiplatelets · <b>anticoagulants for Afib</b></li></ul>
+
+<h2 class="ph e">Evaluate</h2>
+<ul class="nb"><li class="gray">The slides list goals (Plan) but no separate stroke evaluation slide. Use the goals above as your outcomes <span class="cite">S16</span></li></ul>
+
+<h2 class="ph q">Professor's Questions</h2>
+<details class="tg yellow"><summary>"How do you differentiate if a patient is having a TIA or stroke??" <span class="cite">S4</span></summary><div>From the slide: TIA = ischemia <b>without infarction</b>; symptoms of a stroke but typically last <b>&lt; 1 hour</b>. <span class="ask">Ask in class for the full answer</span></div></details>
+<details class="tg yellow"><summary>"Elevated BP is common immediately after a stroke. (why?)" <span class="cite">S17</span></summary><div><span class="ask">Ask in class</span>: not answered in the slides</div></details>
+<details class="tg yellow"><summary>"Homonymous hemianopsia vs neglect" <span class="cite">S23</span></summary><div>From the slide: arrange the environment with things in the visual field, including food; then teach to scan for neglect.</div></details>
+
+<h2 class="ph x">Bedside Check</h2>
+<div class="quiz" data-q="stroke"></div>
+
+<!-- ============ MENINGITIS ============ -->
+<h1 id="men" data-c>Meningitis &amp; Encephalitis <small>Meningitis.Encephalitis.pptx</small></h1>
+<div class="pt"><b>Your patient:</b> acute inflammation of the meningeal tissue around the brain and spinal cord (meningitis) or of the brain itself (encephalitis) <span class="cite">S2, S9</span></div>
+
+<h2 class="ph a">Assess</h2>
+<ul class="nb">
+<li class="red"><span class="star">Prof</span> <b class="r">Bacterial meningitis is a medical emergency</b>; untreated mortality near 100% <span class="cite">S2</span></li>
+<li class="yellow">Risk: <b>students in dorms and prisoners</b> · usually fall, winter, early spring <span class="cite">S2</span></li>
+</ul>
+<details class="tg purple"><summary>Key signs of bacterial meningitis</summary><div><b>Fever · severe headache · nausea, vomiting · nuchal rigidity · skin rash and petechiae (if meningococcus)</b> · coma (5–10%, poor prognosis) <span class="cite">S3</span></div></details>
+<details class="tg purple"><summary>Other signs</summary><div><b>Photophobia</b> · ↓LOC · <b>signs of ↑ICP</b> · <b>seizures in 1/3</b> of cases · headache becomes progressively worse with vomiting and irritability <span class="cite">S3</span></div></details>
+<details class="tg purple"><summary>Encephalitis: what you'll see</summary><div>Nonspecific onset: fever, headache, N/V · signs appear in <b>2–3 days</b> · from minimal mental status change to coma · any CNS abnormality can occur <span class="cite">S10</span><br>Caused by viruses; ticks or mosquitoes can transmit; <b>CMV encephalitis common with AIDS</b> <span class="cite">S9</span></div></details>
+
+<h2 class="ph p">Plan: Goals <span class="cite">S4</span></h2>
+<ul class="nb"><li class="green">Return to maximal neurologic functioning · minimize complications · <b>resolve the infection</b> · control pain and discomfort</li></ul>
+
+<h2 class="ph i">Implement</h2>
+<h3>Acute <span class="cite">S5</span></h3>
+<ul class="nb">
+<li class="purple"><b class="p">Obtain cultures (nasopharyngeal mucosa and CSF) BEFORE starting antibiotics</b> · lumbar puncture to check CSF is normally performed</li>
+<li class="green">Start <b>empiric therapy</b>, discontinue if viral · <span class="star">Prof</span> <b class="g">early antibiotic treatment is critical</b></li>
+<li class="red"><b class="r">Respiratory isolation until cultures are negative</b> · treat close contacts with prophylactic antibiotics · close observation and frequent assessment</li>
+<li class="pink">Comfort: relief for head and neck pain · position for comfort · <b>darkened room and cool cloth over the eyes</b> (photophobia) · minimize stimuli · <b class="r">avoid restraints</b> · provide safety · family at bedside for calming effect</li>
+</ul>
+<h3>Prevention &amp; home care <span class="cite">S6</span></h3>
+<ul class="nb">
+<li class="blue">Immunize high-risk populations: <b>recommended at age 11</b>; if not done, <b>college freshman</b> (dorm life)</li>
+<li>Several weeks of convalescence · increase activity as tolerated · nutrition · rest and sleep · progressive ROM and warm baths for muscle rigidity · ongoing assessment of vision, hearing, cognition, motor and sensory · support family and caregivers</li>
+</ul>
+<h3>Viral meningitis &amp; encephalitis</h3>
+<ul class="nb">
+<li class="blue">Viral meningitis: "It's a virus… <b>manage symptoms</b>" <span class="cite">S8</span></li>
+<li class="orange">Encephalitis: symptomatic and supportive (incl. West Nile) · intensive care may be required initially · <b>antiseizure drugs</b>, may be prophylactic · prevention: <b>environmental mosquito control, repellents</b> <span class="cite">S11</span></li>
+</ul>
+
+<h2 class="ph e">Evaluate <span class="cite">S7</span></h2>
+<ul class="nb"><li class="green">Demonstrates appropriate cognitive function · <b>oriented to person, place, time</b> · <b>body temperature within normal range</b> · reports satisfaction with pain control</li></ul>
+
+<h2 class="ph q">Professor's Questions</h2>
+<details class="tg yellow"><summary>"Treat close contacts with prophylactic antibiotics (what are we concerned about if not treated?)" <span class="cite">S5</span></summary><div><span class="ask">Ask in class</span>: not answered in the slides</div></details>
+<details class="tg yellow"><summary>"How can you tell the difference between bacterial and viral?" <span class="cite">S8</span></summary><div><span class="ask">Ask in class</span>: the slides don't give the criteria. They do say cultures from nasopharyngeal mucosa and CSF are obtained <span class="cite">S5</span></div></details>
+<details class="tg yellow"><summary>"What should you do while you are waiting for the results of the tests?" <span class="cite">S8</span></summary><div>From the slides: <b>start empiric therapy, discontinue if viral</b>; respiratory isolation until cultures are negative <span class="cite">S5</span></div></details>
+<details class="tg yellow"><summary>"What is treatment for viral?" <span class="cite">S8</span></summary><div>From the slide: "It's a virus… <b>manage symptoms</b>"</div></details>
+
+<h2 class="ph x">Bedside Check</h2>
+<div class="quiz" data-q="men"></div>
+
+<!-- ============ SEIZURES ============ -->
+<h1 id="seiz" data-c>Seizures <small>Chronic Neuro seizures.pptx</small></h1>
+<div class="pt"><b>Your patient:</b> sudden, abnormal, excessive electrical discharge of neurons in the brain <span class="cite">S2</span>. Seizure disorder/epilepsy = <b>2 or more seizures more than 24 hours apart</b> without an underlying problem <span class="cite">S3</span></div>
+
+<h2 class="ph a">Assess</h2>
+<ul class="nb">
+<li>Causes: stroke, TBI, hyper/hypoglycemia, electrolyte imbalance, alcohol withdrawal, high fever in children. If it stops when the systemic/metabolic problem is corrected, <b>it is not a seizure disorder</b> <span class="cite">S3</span></li>
+</ul>
+<details class="tg purple"><summary>Phases (4)</summary><div><b>Prodromal</b>: precedes the seizure with signs or activity · <b>Aura</b>: sensory warning, part of the seizure · <b>Ictal</b>: beginning of symptom to end of seizure activity · <b>Postictal</b>: rest and recovery <span class="cite">S4</span></div></details>
+<details class="tg purple"><summary>Generalized: both hemispheres</summary><div>Impaired consciousness (seconds to minutes) · <b>Motor:</b> tonic-clonic, tonic, clonic, atonic · <b>Non-motor (absence):</b> typical, atypical <span class="cite">S5</span></div></details>
+<details class="tg purple"><summary>Focal: one hemisphere</summary><div><b>Focal aware:</b> conscious and alert; unusual feelings (sudden sob, anger, nausea); twitching; sees, tastes, or feels things that are not real<br><b>Focal impaired awareness:</b> loss of consciousness (change in awareness), eyes open, may do embarrassing things, unaware; lasts 1–2 minutes, then resumes usual activity unaware<br><b>Motor terms:</b> atonic (loss of tone) · tonic (sustained stiffening) · clonic (rhythmic jerking) · myoclonic (very rapid, irregular, brief jerking) · automatisms (lip smacking, repetitive behaviors) · non-motor: emotional or autonomic <span class="cite">S6</span></div></details>
+<details class="tg purple"><summary>Status epilepticus &amp; subclinical seizure</summary><div><b class="r">Status epilepticus:</b> continuous seizure activity; seizures in rapid succession with no return of consciousness<br><b>Subclinical:</b> having seizures, but sedatives used so you cannot tell <span class="cite">S7</span></div></details>
+<details class="tg purple"><summary>After the seizure: what you assess</summary><div>Bitten tongue, soft tissue damage, cyanosis · abnormal respiratory rate · <b>apnea (ictal)</b> · absent/abnormal breath sounds · airway occlusion · hypertension, tachy/bradycardia · bowel/urinary incontinence, excessive salivation · <b>weakness, paralysis, ataxia (postictal)</b> · abnormal CT, MRI, EEG<br><b>History:</b> anything different? <b>missed dose? took dose late?</b> any injury? other sickness (vomiting)? <span class="cite">S9</span></div></details>
+<details class="tg purple"><summary>Diagnostics: rule out an underlying cause</summary><div>CBC · CMP · CT, MRI, PET · LP (CSF) · UA · liver enzymes · EEG <span class="cite">S10</span></div></details>
+
+<h2 class="ph p">Plan: Goals <span class="cite">S8</span></h2>
+<ul class="nb"><li class="green">Free from <b>injury during seizure</b> · optimal mental and physical functioning while taking antiseizure medications · satisfactory psychosocial functioning</li></ul>
+
+<h2 class="ph i">Implement</h2>
+<h3>Tonic-clonic: emergency care <span class="cite">S11</span></h3>
+<ol>
+<li class="blue"><b>Ensure airway</b></li>
+<li class="red"><span class="star">Prof</span> <b class="r">Protect from injury (NEVER restrain)</b>: pad rails · help to floor if in chair · protect head · loosen constrictive clothing</li>
+<li class="red"><b class="r">Do not put anything in mouth</b> · turn patient on side</li>
+<li>Establish IV (or IO) · <b>stay with patient, time seizure</b></li>
+<li class="purple">Give medications to stop seizure (<b>benzodiazepines</b>)</li>
+<li>Prepare to suction and assist ventilations after seizure; intubate if necessary</li>
+</ol>
+<ul class="nb"><li class="gray">Most seizures are self-limiting and do not cause injury · first-time seizure or injury → seek medical care · main treatment = medications · potentially surgery, VNS, responsive neurostimulation, ketogenic diet <span class="cite">S11</span></li></ul>
+<h3> Medications <span class="cite">S13</span></h3>
+<div class="tw"><table>
+<tr><th>For</th><th>Drugs</th></tr>
+<tr><td>Tonic-clonic and focal onset</td><td>Phenytoin, Tegretol, Depakote</td></tr>
+<tr><td>Generalized nonmotor and myoclonic</td><td>Zarontin, divalproex, Klonopin</td></tr>
+<tr><td>Focal</td><td>Lamictal, Keppra</td></tr>
+<tr><td>Status epilepticus</td><td><b>Short-acting benzodiazepines</b> (IM, buccal, intranasal, IV); <b>IV Ativan preferred</b> if IV available → followed by long acting</td></tr>
+</table></div>
+<ul class="nb"><li class="yellow">Assess for common side effects and <b>signs of toxicity</b> · teach medication compliance · effects differ in older adults <span class="cite">S13</span></li></ul>
+<h3>Teaching <span class="cite">S12</span></h3>
+<ul class="nb">
+<li class="green"><span class="star">Prof</span> <b class="g">Prevention of recurring seizures is the major goal</b> → adherence; <b>do not adjust dose without physician</b>; keep regular appointments</li>
+<li>Safety measures · helmet if risk of head injury · general health habits · identify and avoid precipitating events · <b>avoid excessive alcohol, fatigue, loss of sleep</b></li>
+<li>Teach family emergency management · emotional support and coping · employment discrimination · restricted driving · <b>medical alert bracelets</b> · referrals</li>
+</ul>
+<h3>Complications <span class="cite">S14</span></h3>
+<ul class="nb"><li class="pink">Severe injury and death from trauma; <span class="star">Prof</span> <b>patients who lose consciousness are at greatest risk</b> · mortality 2–3× general population · <span class="star">Prof</span> <b>effect on lifestyle = most common complication</b> (stigma, employment and education limits, driving sanctions)</li></ul>
+
+<h2 class="ph e">Evaluate <span class="cite">S15</span></h2>
+<ul class="nb"><li class="green">Breathing pattern adequate to meet O₂ needs · <b>no seizure-related injury</b> · accepts seizure disorder and maintains compliant behavior · acknowledges seizure occurred · <b>therapeutic drug levels</b></li></ul>
+
+<h2 class="ph q">Professor's Questions</h2>
+<details class="tg yellow"><summary>"What is a pseudoseizure (psychogenic)?" <span class="cite">S7</span></summary><div><span class="ask">Ask in class</span>: not defined in the slides</div></details>
+<details class="tg yellow"><summary>"How do you treat a seizure?" <span class="cite">S7</span></summary><div>From the slides: main treatment is medications <span class="cite">S11</span>; tonic-clonic emergency care steps <span class="cite">S11</span>; status epilepticus → short-acting benzodiazepine, IV Ativan preferred <span class="cite">S13</span></div></details>
+<details class="tg yellow"><summary>"How do you treat a pseudoseizure?" <span class="cite">S7</span></summary><div><span class="ask">Ask in class</span>: not answered in the slides</div></details>
+
+<h2 class="ph x">Bedside Check</h2>
+<div class="quiz" data-q="seiz"></div>
+
+<!-- ============ HEADACHES ============ -->
+<h1 id="ha" data-c>Headaches <small>Chronic Neuro Headaches.pptx</small></h1>
+<div class="pt"><b>Your patient:</b> probably the most common pain humans experience. Most are <b>primary</b> (migraine, tension-type, cluster); <b>secondary</b> headaches come from another condition (sinus infection, neck injury, stroke) <span class="cite">S2</span></div>
+
+<h2 class="ph a">Assess: which headache is this?</h2>
+<details class="tg purple"><summary>Tension-type</summary><div><b>Bilateral</b> · <b>pressing/tightening</b> · constant dull pressure · frontal-occipital · mild or moderate · associated with neck pain and ↑ tone in cervical/neck muscles · may occur intermittently for weeks, months, years · photophobia, phonophobia · <b class="r">no nausea/vomiting · no prodrome</b> <span class="cite">S4</span></div></details>
+<details class="tg purple"><summary>Migraine</summary><div><b>Unilateral (primarily) or bilateral throbbing</b> · triggering event or factor (certain food, trauma, menstruation) · genetic link (50%)<br>Without aura = most common · with aura = only 25%; aura 10–30 min before (visual, sensory, motor)<br>Photophobia · steady throbbing <b>4–72 hours</b> · patient "<b>hibernates</b>" (seeks shelter from noise, light, odors, people) · can have N/V · can have numbness/tingling of face <span class="cite">S5</span></div></details>
+<details class="tg purple"><summary>Cluster</summary><div>Rare · <b>sharp, stabbing</b> · repeatedly (daily) for weeks to months, then remission · <b>same time of day</b> · one of the most severe · trigeminal nerve implicated · <b>alcohol</b> dietary trigger<br>Unilateral, minutes to 3 hours, <b>around the eye</b> radiating to temple, forehead, cheek, nose, gums · edema around eye, <b>tearing, ptosis</b> · facial flushing or pallor · rhinitis · constricted pupil · patient <b>agitated and restless</b> <span class="cite">S6</span></div></details>
+<details class="tg purple"><summary>Secondary causes to rule out</summary><div>Subarachnoid hemorrhage · brain tumors · intracranial masses · vascular abnormalities · trigeminal neuralgia · eyes, nose, teeth disease · systemic illness (bacteremia, CO poisoning, mountain sickness, polycythemia vera) · <b>medication overuse headache</b> (acetaminophen, NSAIDs, aspirin, sumatriptan, opioids) <span class="cite">S3</span></div></details>
+<details class="tg purple"><summary>Diagnostics</summary><div>Neurological exam · <b>CT if concern for secondary cause</b> · CBC, BMP, UA <span class="cite">S7</span></div></details>
+
+<h2 class="ph p">Plan</h2>
+<ul class="nb"><li class="gray">If no systemic disease is the cause, <b>the type of headache guides therapy</b>; symptomatic and prophylactic therapies are used <span class="cite">S8</span></li></ul>
+
+<h2 class="ph i">Implement</h2>
+<h3>Nursing &amp; teaching <span class="cite">S8</span></h3>
+<ul class="nb">
+<li class="yellow"><b class="o">Headache diary</b> · daily exercise, relaxation, socializing · alternatives: relaxation, meditation, yoga, self-hypnosis</li>
+<li class="blue">Quiet, dim environment · <b>massage and heat packs for tension-type</b></li>
+<li class="red"><b>Written note of medications to prevent accidental overdose</b></li>
+<li>Teach prophylactic treatment · dietary counseling for food triggers · avoid smoking and environmental triggers (foods, smoking, strong perfumes; may change over time)</li>
+</ul>
+<h3> Drugs by type <span class="cite">S9</span></h3>
+<details class="tg purple"><summary>Tension</summary><div>Non-opioid analgesic: <b>aspirin/NSAID</b> · caffeine, sedative, muscle relaxant · preventive: tricyclic antidepressant, antiseizure, muscle relaxant</div></details>
+<details class="tg purple"><summary>Migraine</summary><div>Mild–moderate: NSAID, aspirin, caffeine analgesics · <span class="star">Prof</span> <b>moderate–severe: triptans first line</b> · <b class="r">triptans contraindicated in some patients: cause vasoconstriction</b> · preventive treatment</div></details>
+<details class="tg purple"><summary>Cluster</summary><div><b>Triptans</b> standard · <b>high-flow 100% oxygen at 7–12 L/min for 20 min</b> · preventive</div></details>
+
+<h2 class="ph e">Evaluate <span class="cite">S10</span></h2>
+<ul class="nb"><li class="green">Reports satisfaction with pain relief · uses drug and nondrug measures appropriately</li></ul>
+
+<h2 class="ph x">Bedside Check</h2>
+<div class="quiz" data-q="ha"></div>
+
+<!-- ============ PARKINSON ============ -->
+<h1 id="pd" data-c>Parkinson's Disease <small>Chronic Neuro Parkinsons.pptx</small></h1>
+<div class="pt"><b>Your patient:</b> disease of the basal ganglia; chronic, progressive, neurodegenerative, <b>no acute exacerbations</b>. Lack of dopamine disrupts the dopamine–acetylcholine balance <span class="cite">S2–3</span></div>
+
+<h2 class="ph a">Assess</h2>
+<details class="tg purple"><summary>Classic triad (+ postural instability)</summary><div><b>Tremor</b>: "pill rolling" · <b>Rigidity</b>: "cogwheel" · <b>Bradykinesia</b>: slowing in initiating and executing movement, loss of automatic movement · also <b>postural instability</b> (unable to stop) <span class="cite">S4</span></div></details>
+<details class="tg purple"><summary>Progression</summary><div>Gradual onset · early: mild tremor, slight limp, ↓ arm swing · later: <b>shuffling, propulsive gait</b>, arms flexed, loss of postural reflexes · speech changes, communication, sleep, eating concerns <span class="cite">S4</span></div></details>
+<details class="tg purple"><summary>Non-motor symptoms</summary><div>Depression, anxiety, apathy, fatigue, pain, incontinence, constipation, erectile dysfunction, memory changes <span class="cite">S4</span></div></details>
+<ul class="nb"><li class="gray">Increases with age · <b>more common in men</b> · Lewy bodies · cause unknown <span class="cite">S3</span></li></ul>
+
+<h2 class="ph p">Plan: Goals <span class="cite">S5</span></h2>
+<ul class="nb"><li class="green">Maximize neurologic function · <b>maintain independence in ADLs</b> as long as possible · <b>prevent injury</b> · optimize psychosocial well-being</li></ul>
+
+<h2 class="ph i">Implement</h2>
+<h3>Nursing <span class="cite">S6</span></h3>
+<ul class="nb">
+<li class="blue">Maintenance of good health · encourage independence · <b>avoid contractures and falls</b> · promote exercise</li>
+<li class="green">Diet: well-balanced · <b>food cut into small pieces</b> · <b>6 small meals</b> · moderate fiber · <b class="g">limit protein to evening</b></li>
+<li class="yellow"><b>Bradykinesia help:</b> rock side to side to start · think about stepping over a line · lift toes when stepping · chairs with arms (back legs on small blocks) · remove rugs and excess furniture · simplify clothing (no buttons, hooks) · elevated toilet seats · ottoman for legs · sleep hygiene</li>
+<li class="pink">Help adjust lifestyle · caregivers may experience stress with progression (e.g., dementia)</li>
+</ul>
+<h3>Collaborative <span class="cite">S7</span></h3>
+<ul class="nb">
+<li class="purple"><span class="star">Prof</span> <b class="p">Levodopa with Carbidopa (Sinemet): primary treatment</b> · one drug best, may need combination · <b class="r">excessive dopaminergic drugs → paradoxic intoxication</b></li>
+<li>No cure; relieve symptoms · nutrition, physical, speech therapy · surgery: DBS, ablation</li>
+</ul>
+
+<h2 class="ph e">Evaluate</h2>
+<ul class="nb">
+<li class="green">Exercises to deter atrophy and contractures · uses assistive devices appropriately · nutrition adequate · <b>safe passage of fluids/solids from mouth to stomach</b> · communication meets needs <span class="cite">S9</span></li>
+<li class="red">Watch for complications (↑ with progression): <b>dysphagia → malnutrition and aspiration</b> · weakness, immobility · <b>orthostatic hypotension</b> · falls · dyskinesias · neuropsychological problems · <span class="star">Prof</span> <b>dementia in 70%</b> · pneumonia, UTI, skin breakdown <span class="cite">S8</span></li>
+</ul>
+
+<h2 class="ph x">Bedside Check</h2>
+<div class="quiz" data-q="pd"></div>
+
+<!-- ============ MS ============ -->
+<h1 id="ms" data-c>Multiple Sclerosis <small>Chronic Neuro MS.MG.pptx</small></h1>
+<div class="pt"><b>Your patient:</b> chronic, progressive, degenerative CNS disorder: <b>segmental demyelination</b> of nerve fibers of brain and spinal cord <span class="cite">S2</span>. Onset 20–40 yrs; <b>women 2–3× more</b>; more in temperate climates <span class="cite">S3</span></div>
+
+<h2 class="ph a">Assess</h2>
+<ul class="nb">
+<li class="orange"><span class="star">Prof</span> <b class="o">Vision changes often first sign</b> <span class="cite">S4</span></li>
+<li>Muscle weakness or fatigue · tingling or numbness · muscle spasms · <b>Lhermitte's sign</b> (electric shock down the spine) · pain · altered bowel and bladder · cognitive and emotional changes <span class="cite">S4</span></li>
+</ul>
+<details class="tg purple"><summary>Pathology (3) &amp; disease patterns (4)</summary><div>Chronic inflammation · demyelination · gliosis (scarring)<br><b>Relapsing-remitting (85%)</b> · primary-progressive · secondary-progressive · progressive-relapsing <span class="cite">S3</span></div></details>
+
+<h2 class="ph p">Plan: Goals <span class="cite">S5</span></h2>
+<ul class="nb"><li class="green">Maximize neuromuscular function · independence in ADLs · <b>manage disabling fatigue</b> · optimize psychosocial well-being · adjust to illness · <b>↓ factors that precipitate exacerbations</b></li></ul>
+
+<h2 class="ph i">Implement</h2>
+<h3>Nursing <span class="cite">S6</span></h3>
+<ul class="nb">
+<li class="yellow"><b>Identify and avoid triggers:</b> infection, trauma, <b>live virus immunizations</b>, childbirth, stress, climate</li>
+<li class="blue">Reassure during diagnostic phase · help with anxiety and grief · during acute exacerbation <b>prevent complications of immobility</b></li>
+<li class="green">Balance exercise and rest · <b>minimize caffeine</b> · nutritious meals · <b>high-fiber diet for constipation</b> · medication management · <b>self-catheterization if necessary</b> · emotional adjustment, lifestyle changes</li>
+</ul>
+<h3>Collaborative <span class="cite">S7</span></h3>
+<ul class="nb">
+<li class="purple">No cure · disease-modifying: interferons, monoclonal antibodies, synthetic agents, <span class="star">Prof</span> <b>immunomodulators (often used first)</b> · corticosteroids</li>
+<li>Symptom drugs: spasticity, fatigue, pain (antidepressants, antiseizure), depression, bowel/bladder (<b>anticholinergics</b>), sexual problems, cognitive changes</li>
+<li class="blue">PT: decrease spasticity · increase coordination · train unaffected muscles · <b>water exercise</b> · surgery</li>
+</ul>
+
+<h2 class="ph e">Evaluate <span class="cite">S8</span></h2>
+<ul class="nb"><li class="green">Maintains or improves muscle strength and mobility · assistive devices used appropriately · <b>maintains urinary continence</b> · makes decisions about lifestyle modifications</li></ul>
+
+<h2 class="ph x">Bedside Check</h2>
+<div class="quiz" data-q="ms"></div>
+
+<!-- ============ MG ============ -->
+<h1 id="mg" data-c>Myasthenia Gravis <small>Chronic Neuro MS.MG.pptx</small></h1>
+<div class="pt"><b>Your patient:</b> autoimmune disease of the <b>neuromuscular junction</b>; fluctuating weakness of skeletal muscle; may respond to removal of the thymus <span class="cite">S9</span></div>
+
+<h2 class="ph a">Assess <span class="cite">S10</span></h2>
+<ul class="nb">
+<li class="pink">Fluctuating weakness of muscles used in repetitive movement: <b>eyes and eyelids · chewing, swallowing · speaking · breathing</b> · trunk and limbs</li>
+<li class="yellow"><b>Strongest in the morning</b> · exhausted with continued activity · <b>no sensory loss, reflexes normal</b> · course varies from short-term remission to severe progressive</li>
+</ul>
+<div class="callout red"><div><b class="r">Myasthenic crisis</b> = acute worsening of muscle weakness; triggers: <b>infection, surgery, stress, drugs, pregnancy, corticosteroids</b><br>Complications arise when weakness affects <b>swallowing and breathing</b>; may need a ventilator<br><b>Cholinergic crisis</b> is also named on the slide. <span class="ask">Ask in class for how it differs</span> <span class="cite">S10</span></div></div>
+
+<h2 class="ph p">Plan</h2>
+<ul class="nb"><li class="gray">The slides give no separate goals list for MG. Care focuses on <b>treating complications</b> and <b>balancing between avoiding a myasthenic or a cholinergic crisis</b> <span class="cite">S11</span></li></ul>
+
+<h2 class="ph i">Implement <span class="cite">S11</span></h2>
+<ul class="nb">
+<li class="blue">Usually hospitalized for a <b>respiratory infection or myasthenic crisis</b></li>
+<li class="yellow">Teach: drug risks and benefits · potential drug contraindications · <b>recognizing and managing myasthenic crisis</b></li>
+<li class="green">Diet: <b>balanced/soft, easy to chew and swallow</b></li>
+<li class="purple">Collaborative: <b>surgery to remove thymus</b> · <b>anticholinesterase</b> · corticosteroids and immunosuppressants</li>
+</ul>
+
+<h2 class="ph x">Bedside Check</h2>
+<div class="quiz" data-q="mg"></div>
+
+<!-- ============ DEMENTIA ============ -->
+<h1 id="dem" data-c>Delirium, Dementia &amp; Alzheimer's <small>Dementia.pptx</small></h1>
+<div class="pt"><b>Your patient:</b> confused. First decide whether this is <b>delirium, dementia, or depression</b> <span class="cite">S2</span></div>
+
+<h2 class="ph a">Assess</h2>
+<div class="tw"><table>
+<tr><th>Feature</th><th>Dementia</th><th>Delirium</th><th>Depression</th></tr>
+<tr><td>Onset</td><td>Subtle, gradual</td><td>Abrupt (can be subtle initially)</td><td>Often abrupt; coincides with life changes</td></tr>
+<tr><td>Progression</td><td>Slow</td><td>Abrupt</td><td>Variable</td></tr>
+<tr><td>Duration</td><td>Years</td><td>Hours to days to weeks</td><td>Several months to years</td></tr>
+<tr><td>Thinking</td><td>Difficulty with abstract thinking, impaired judgment, word-finding</td><td>Disorganized, distorted; slow or accelerated incoherent speech</td><td>Intact but apathy, fatigue; indecisive; hopeless</td></tr>
+<tr><td>Perception</td><td>Misperceptions; delusions, hallucinations</td><td>Distorted; delusions, hallucinations</td><td>May deny or be unaware; guilt</td></tr>
+<tr><td>Psychomotor</td><td>May pace, hyperactive; later limited</td><td>Variable</td><td>Withdrawn, hypoactive</td></tr>
+<tr><td>Sleep-wake</td><td>Fragmented; sleeps in day, wakes at night</td><td>Disrupted; reversed</td><td>Disturbed; early-morning awakening</td></tr>
+</table></div>
+<p class="src">Source: Dementia S2</p>
+<details class="tg purple"><summary>Delirium: causes, risk factors, diagnosis</summary><div><b>Causes:</b> Dementia, Dehydration · Electrolyte imbalances, Emotional stress · Lung, liver, heart, kidney, brain · Infection, Intensive care unit · Rx drugs · Injury, Immobility · Untreated pain, Unfamiliar environment · Metabolic disorders<br><b>Risk:</b> &gt; 65, male · cognitive · drugs · environment · immobility, functional dependence · medical problems · sensory · surgery<br><b>Diagnosis:</b> medical, psychological, physical history · <b>Confusion Assessment Method</b> · labs to find cause <span class="cite">S3</span></div></details>
+<details class="tg purple"><summary>Alzheimer's: what it is, risk, diagnosis</summary><div><span class="star">Prof</span> <b>Not a normal part of aging</b> (normal forgetfulness vs AD) · chronic, progressive, <b>irreversible</b> · amyloid plaques, neurofibrillary tangles, loss of neuron connections, neuron death · risk: <span class="star">Prof</span> <b>age (greatest)</b>, family history, cardiovascular, head trauma <span class="cite">S5</span><br>Pathologic changes precede symptoms by <b>at least 15 years</b> <span class="cite">S7</span><br>No definitive test except post mortem · <b>diagnosed by exclusion</b> · imaging (CT, MRI, PET), biomarkers, neuropsychological testing <span class="cite">S9</span></div></details>
+<details class="tg purple"><summary>Alzheimer's stages: mild, moderate, severe</summary><div><b>Mild:</b> forgetful beyond normal · short-term memory impairment · loss of initiative/interests · forgets recent events, names · impatient · can't solve simple math · losing ability to plan<br><b>Moderate:</b> more obvious memory loss and confusion · trouble planning · needs help dressing · incontinence · forgets family names · agitation, restlessness · lacks judgment, <b>wandering</b> · delusions, hallucinations<br><b>Severe:</b> severe impairment of all cognition · little memory · unable to perform self-care · may be unable to talk or understand words · <b>problems eating/swallowing</b> · immobility · incontinence <span class="cite">S7</span></div></details>
+
+<h2 class="ph p">Plan: Goals (AD caregiver &amp; patient) <span class="cite">S10</span></h2>
+<ul class="nb"><li class="green"><b>Reduce caregiver stress</b> · caregiver maintains own health · copes with long-term caregiving · patient maintains function as long as possible · <b>safe environment, minimum injuries</b> · personal care needs met · <b>dignity maintained</b></li></ul>
+
+<h2 class="ph i">Implement</h2>
+<h3>Delirium <span class="cite">S4</span></h3>
+<ul class="nb">
+<li class="blue">Nurse's role: <b>prevention, early recognition, treatment</b> · focus on <b>eliminating precipitating factors</b></li>
+<li class="green">Protect from harm: <b>close to nurses' station</b> · caregiver (sitter) · <b>familiar objects, reorientation</b> (clocks, calendars, lists, schedules) · touch, verbal communication · early mobility · <span class="star">Prof</span> <b class="r">avoid restraints</b> · drug therapy if needed</li>
+</ul>
+<h3>Alzheimer's <span class="cite">S11</span></h3>
+<ul class="nb"><li class="purple">Regular assessment, incl. <b>family stress and coping</b> · determine potential cause of any behavior change · safe environment · meet patient needs · promote sleep · caregiver support · <b>teach family safety measures for each stage</b> · delegate</li></ul>
+<details class="tg purple"><summary>Behavior problems: what do you do? <span class="cite">S12</span></summary><div>Repetitiveness, delusions, hallucinations, agitation, aggression are the patient's <b>way of responding to a precipitating factor</b>: pain, frustration, temperature extremes, anxiety<br>Strategies: <b>redirection · distraction · reassurance</b> · <b class="r">do not threaten or restrain</b> if frustrated</div></details>
+<details class="tg purple"><summary>Sundowning <span class="cite">S13</span></summary><div>More confused and agitated in <b>late afternoon or evening</b> · remain calm, avoid confrontation · assess for cause · quiet, calm environment · <b>maximize daylight</b> · evaluate medications · <b>limit naps and caffeine</b> · consult provider on drug therapy</div></details>
+<details class="tg purple"><summary>Collaborative &amp; drugs <span class="cite">S14</span></summary><div>Dietician · OT · social worker · caregiver support<br>Memory and cognition: <b>cholinesterase inhibitors</b>, <b>NMDA receptor antagonist</b> · depression · behavior: antipsychotics, benzodiazepines · sleep problems</div></details>
+<details class="tg purple"><summary>Health promotion <span class="cite">S15</span></summary><div>Keep your brain healthy · avoid harmful substances · challenge yourself · exercise regularly · stay socially active · avoid brain trauma · treat depression</div></details>
+
+<h2 class="ph e">Evaluate</h2>
+<ul class="nb"><li class="gray">The slides give no separate evaluation slide. Use the AD goals above as your outcomes <span class="cite">S10</span></li></ul>
+
+<h2 class="ph q">Professor's Questions</h2>
+<details class="tg yellow"><summary>"What about medication compliance?" <span class="cite">S14</span></summary><div><span class="ask">Ask in class</span>: not answered in the slides</div></details>
+<details class="tg yellow"><summary>"Normal forgetfulness in aging vs. Alzheimer Disease" <span class="cite">S5</span></summary><div>From the slides: AD is <b>not a normal part of aging</b> <span class="cite">S5</span>; mild AD = "forgetful beyond normal" <span class="cite">S7</span>. <span class="ask">Ask in class for more</span></div></details>
+
+<h2 class="ph x">Bedside Check</h2>
+<div class="quiz" data-q="dem"></div>
+
+<p class="src" style="margin-top:40px">Sources: Cranial Nerves Summary Chart.docx · Neruo IICP.pptx · Stroke.pptx · Meningitis.Encephalitis.pptx · Chronic Neuro seizures-1.pptx · Chronic Neuro Headaches-1.pptx · Chronic Neuro Parkinsons-1.pptx · Chronic Neuro MS-1.MG.pptx · Dementia.pptx. Slide numbers <span class="cite">S#</span> refer to the deck named in each section heading.</p>
+
+</main>
+</div>
+
+<div id="mmo">
+<div id="mmbar">
+<span class="ttl"> Patient Care Mind Map</span>
+<button id="mmTopics">Topics only</button>
+<button id="mmAll">Expand all</button>
+<button id="mmFit">Fit to screen</button>
+<input id="mmFind" placeholder="Search (e.g. tPA, LOC)…">
+<span class="sp" style="flex:1"></span>
+<button id="mmClose">✕ Close</button>
+</div>
+<svg id="mmsvg"></svg>
+<div id="mminfo"><span class="path" id="mmPath">Click a node to expand or collapse it. Drag to move the map, scroll to zoom.</span><button id="mmGo" disabled>Open in guide ↗</button></div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+<script>
+/* Bedside Check: every answer and explanation comes from the cited slide. */
+var QUIZ={
+iicp:[
+ {q:"Your patient with a head injury is being watched for ↑ICP. Which change is the FIRST sign you should catch?",o:["Change in level of consciousness","Cushing's triad","Systolic hypertension with widening pulse pressure","Fixed, dilated pupil"],a:0,e:"Change in LOC is the FIRST sign. Change in vital signs (Cushing's triad) is a LATE sign.",s:"IICP S8"},
+ {q:"Which set of findings is Cushing's triad, a neurologic emergency?",o:["Systolic HTN with widening pulse pressure, bradycardia with bounding pulse, irregular decreased respirations","Hypotension, tachycardia, rapid respirations","Fever, nuchal rigidity, photophobia","Tremor, rigidity, bradykinesia"],a:0,e:"Cushing's triad = systolic hypertension with widening pulse pressure, bradycardia with bounding pulse, irregular decreased respirations.",s:"IICP S4"},
+ {q:"How do you position the head of the bed for a patient with ↑ICP?",o:["Elevated 30°, not higher or lower","Flat","45–60°","Lower than the feet"],a:0,e:"HOB elevated 30 degrees (not higher or lower), head in neutral alignment, prevent extreme neck flexion.",s:"IICP S13"},
+ {q:"Which activity should the patient with ↑ICP avoid?",o:["Coughing, straining, Valsalva, hip flexion","Head in neutral alignment","Turning slowly","A quiet, soothing environment"],a:0,e:"Avoid coughing, straining, Valsalva, and hip flexion.",s:"IICP S13"},
+ {q:"A lumbar puncture is proposed for a patient with ↑ICP. What does the slide say?",o:["LP is contraindicated","LP is the first-line test","LP is required before CT","LP is needed to measure ICP"],a:0,e:"Diagnostic tests: no lumbar puncture, contraindicated.",s:"IICP S11"},
+ {q:"Which IV fluid is preferred to keep the ↑ICP patient normovolemic?",o:["0.9% NaCl","D5W","0.45% NaCl","Any of them equally"],a:0,e:"IV 0.9% NaCl is preferred over D5W or 0.45% NaCl.",s:"IICP S17"},
+ {q:"Your patient is receiving hypertonic saline. What do you monitor?",o:["BP and serum sodium","Blood glucose only","Liver enzymes","Drug level"],a:0,e:"Hypertonic saline moves water out of cells into blood; monitor BP and serum sodium. (Mannitol: monitor fluid and electrolyte status.)",s:"IICP S18"},
+ {q:"The ventriculostomy reading suddenly looks off. Which is a cause of inaccurate readings?",o:["Air bubbles, kinks in tubing, or wrong transducer height","Measuring as mean pressure","Recording the waveform","HOB at 30°"],a:0,e:"Inaccurate readings come from CSF leaks, obstruction/kinks, differences in height of bolt/transducer, incorrect height of drainage system, bubbles/air in tubing.",s:"IICP S14"}
+],
+stroke:[
+ {q:"A patient arrives with sudden facial droop and arm drift. What is the most important part of the history?",o:["Time of onset","Family history","Diet","Medication allergies"],a:0,e:"Time of onset is more important patient history; meet door-to-needle guidelines.",s:"Stroke S17"},
+ {q:"In the emergency sequence, what must happen before a thrombolytic is given?",o:["CT scan to rule out hemorrhage and a blood glucose check","Swallow evaluation","Aspirin","Physical therapy consult"],a:0,e:"ABCs, Stroke Alert, IV/BP, CT scan to rule out hemorrhage, check blood glucose (treat if hypoglycemic), labs, then thrombolytic. Keep NPO.",s:"Stroke S17"},
+ {q:"Your ischemic stroke patient will receive tPA. What BP must you reach first?",o:["Less than 185/110","Less than 220/120","Less than 140/90","Less than 160 systolic"],a:0,e:"Reduce to less than 185/110 mmHg if giving fibrinolytics. Without tPA, only reduce if greater than 220/120.",s:"Stroke S17–18"},
+ {q:"What is the IV tPA time window from symptom onset?",o:["3–4.5 hours","Up to 24 hours","Up to 12 hours","Any time after CT"],a:0,e:"Fibrinolytic tPA: IV 3–4.5 hours from onset; intra-arterial up to 6 hours.",s:"Stroke S18"},
+ {q:"Which history means tPA will NOT be given?",o:["Recent GI bleed","Hypertension","Diabetes","Smoking"],a:0,e:"Will not give if history of GI bleed, coagulation disorders, head trauma, major surgery, internal bleeding.",s:"Stroke S18"},
+ {q:"A patient with a hemorrhagic stroke has an order for an anticoagulant. What does the slide say?",o:["Anticoagulants and platelet inhibitors are contraindicated","Give it 24–48 hours after admission","Give with a statin","Give only if SBP < 160"],a:0,e:"Hemorrhagic stroke: anticoagulants and platelet inhibitors are contraindicated. BP goal SBP < 160.",s:"Stroke S19"},
+ {q:"A patient with subarachnoid hemorrhage develops cerebral vasospasm. Which drug class do the slides name for it?",o:["Calcium channel blockers","Anticoagulants","tPA","Triptans"],a:0,e:"Calcium channel blockers treat vasospasm.",s:"Stroke S19"},
+ {q:"The day after a stroke, your patient asks for a drink of water. What do you do?",o:["Keep NPO until a swallow evaluation rules out dysphagia","Give thin water slowly","Give water with a straw","Let the family decide"],a:0,e:"Prevent aspiration: swallow eval to rule out dysphagia. NPO until swallow evaluation.",s:"Stroke S21–22"},
+ {q:"How should you talk with a patient who has aphasia?",o:["Simple, short sentences, yes/no questions, normal volume and tone, give time","Speak louder and faster","Use long explanations to be thorough","Avoid gestures"],a:0,e:"Simple, short sentences; assess for understanding; yes/no questions; normal volume/tone; give time for response; decrease stimuli; use gestures.",s:"Stroke S23"},
+ {q:"A right-brain stroke patient leaves all the food on one side of the plate. What is the slide's approach?",o:["Arrange things, including food, in the visual field, then teach to scan","Remove the plate and feed the patient","Tell the patient to try harder","Place items on the neglected side only"],a:0,e:"Right-side stroke is more likely to cause spatial-perceptual problems and neglect. Arrange the environment with things in the visual field, including food; then teach to scan.",s:"Stroke S14, S23"},
+ {q:"Which action prevents shoulder displacement in a hemiplegic patient?",o:["Avoid pulling the patient by the arm","Pull by the weak arm to reposition","Keep the arm hanging free","Lie on the weak side for 2 hours"],a:0,e:"Arm supports with slings and lap boards; avoid pulling the patient by the arm. Position on the weak or paralyzed side for only 30 minutes.",s:"Stroke S21–22"},
+ {q:"Your post-stroke patient has bladder incontinence. What does the slide say about catheters?",o:["Avoid the use of indwelling catheters; use bladder retraining","Insert an indwelling catheter right away","Restrict fluids","Incontinence is permanent"],a:0,e:"Bladder retraining; avoid the use of indwelling catheters.",s:"Stroke S22"}
+],
+men:[
+ {q:"A college dorm student has fever, severe headache, nuchal rigidity, and petechiae. Before the first antibiotic dose, what must you do?",o:["Obtain cultures from nasopharyngeal mucosa and CSF","Wait for culture results before any antibiotic","Give a triptan","Restrain to protect from injury"],a:0,e:"Obtain cultures from nasopharyngeal mucosa and CSF prior to starting antibiotics. Early antibiotic treatment is critical.",s:"Men S3, S5"},
+ {q:"What isolation does this patient need?",o:["Respiratory isolation until cultures are negative","No isolation","Contact isolation only after 7 days","Isolation only if viral"],a:0,e:"Place on respiratory precautions; respiratory isolation until cultures are negative.",s:"Men S5"},
+ {q:"The patient has photophobia and is restless. Which comfort measures do the slides list?",o:["Darkened room, cool cloth over the eyes, minimize stimuli, avoid restraints","Bright lights to keep the patient alert","Restraints for safety","Frequent loud reorientation"],a:0,e:"Darkened room and cool cloth over the eyes for photophobia; minimize environmental stimuli; avoid restraints; family at bedside for calming effect.",s:"Men S5"},
+ {q:"While waiting to know if it's bacterial or viral, what do you do?",o:["Start empiric therapy; discontinue if viral","Hold all antibiotics","Discharge the patient","Give antiseizure drugs only"],a:0,e:"Start empiric therapy, discontinue if viral.",s:"Men S5"},
+ {q:"When is the meningitis vaccine recommended?",o:["Age 11; if missed, as a college freshman","Only after age 65","At birth only","Only for prisoners"],a:0,e:"Immunize high-risk populations: recommended at age 11; if not done yet, college freshman (dorm life).",s:"Men S6"},
+ {q:"What prevention do the slides give for encephalitis?",o:["Environmental mosquito control and repellents","Meningitis vaccine at age 11","Prophylactic antibiotics","Low-protein diet"],a:0,e:"Environmental mosquito control for prevention; apply repellents.",s:"Men S11"}
+],
+seiz:[
+ {q:"Your patient starts a tonic-clonic seizure in bed. Which action is correct?",o:["Turn on side, nothing in the mouth, never restrain","Restrain the limbs to prevent injury","Insert a bite block","Leave to get help and return later"],a:0,e:"Ensure airway; protect from injury (NEVER restrain); do not put anything in mouth; turn patient on side; stay with patient and time the seizure.",s:"Seiz S11"},
+ {q:"Seizures are happening in rapid succession without return of consciousness. What do you give first?",o:["Short-acting benzodiazepine (IV Ativan preferred)","Phenytoin by mouth","Levodopa","A triptan"],a:0,e:"Status epilepticus: short-acting benzodiazepines (IM, buccal, intranasal, IV); IV Ativan preferred if IV available; followed by long-acting.",s:"Seiz S7, S13"},
+ {q:"After the seizure, which history question is key?",o:["Did you miss a dose or take a dose late?","What did you eat for breakfast?","When was your last vaccine?","Do you have a family history of stroke?"],a:0,e:"History: ask if anything is different, missed dose, took dose late, any injury, other sickness (vomiting).",s:"Seiz S9"},
+ {q:"Your patient is alert, has twitching, and feels sudden anger and nausea. Which type is this?",o:["Focal aware","Generalized tonic-clonic","Absence","Focal impaired awareness"],a:0,e:"Focal aware: conscious and alert; unusual feelings or sensations (sudden sob, anger, nausea); twitching.",s:"Seiz S6"},
+ {q:"What is the most common complication of seizure disorder?",o:["Effect on lifestyle","Death","Status epilepticus","Aspiration pneumonia"],a:0,e:"Effect on lifestyle is the most common complication (social stigma, employment and education limits, driving sanctions).",s:"Seiz S14"},
+ {q:"Which teaching point matches the slides?",o:["Don't adjust your dose without the physician; avoid excess alcohol, fatigue, and sleep loss","Stop the medication once seizure-free for a month","Double the dose if you miss one","Driving is unrestricted"],a:0,e:"Importance of medication adherence, do not adjust dose without physician; avoid excessive alcohol, fatigue, and loss of sleep; restricted driving.",s:"Seiz S12"}
+],
+ha:[
+ {q:"Your patient has bilateral, pressing, constant dull pain with neck tension, no nausea, and no prodrome. Which headache is this?",o:["Tension-type","Migraine","Cluster","Subarachnoid hemorrhage"],a:0,e:"Tension-type: bilateral, pressing/tightening, constant dull pressure, neck pain; no nausea/vomiting, no prodrome.",s:"HA S4"},
+ {q:"Your patient has sharp, stabbing pain around one eye with tearing and ptosis, and is pacing. Which treatment do the slides list?",o:["High-flow 100% oxygen at 7–12 L/min for 20 min (and triptans)","Massage and heat packs","Dark room and sleep only","Opioids as first line"],a:0,e:"Cluster: unilateral sharp stabbing pain around the eye, tearing, ptosis, agitated and restless. Treat with triptans and high-flow 100% oxygen at 7–12 L/min for 20 min.",s:"HA S6, S9"},
+ {q:"What is first-line therapy for a moderate–severe migraine?",o:["Triptans","Muscle relaxant","Oxygen","Tricyclic antidepressant"],a:0,e:"Moderate to severe migraine: triptans first line. Triptans are contraindicated in some patients because they cause vasoconstriction.",s:"HA S9"},
+ {q:"Which teaching helps prevent accidental overdose?",o:["Keep a written note of medications taken","Take extra doses early","Avoid a headache diary","Switch medications daily"],a:0,e:"The patient should make a written note of medications to prevent accidental overdose; keep a headache diary.",s:"HA S8"},
+ {q:"When is a CT indicated for headache?",o:["If there is concern for a secondary cause","For every tension headache","Never","Only for migraine with aura"],a:0,e:"Diagnostic studies: neurological exam; CT if concern for secondary cause; CBC, BMP, UA.",s:"HA S7"}
+],
+pd:[
+ {q:"You observe pill-rolling tremor, cogwheel rigidity, and slow movement. What is this?",o:["The classic triad of Parkinson's disease","Myasthenic crisis","Cushing's triad","Focal seizure"],a:0,e:"Classic triad of PD: tremor (pill rolling), rigidity (cogwheel), bradykinesia. Also postural instability.",s:"PD S4"},
+ {q:"Your patient freezes when trying to start walking. What can you teach?",o:["Rock side to side, or think about stepping over a line on the floor","Walk faster with eyes closed","Stay in bed","Use rugs for cushioning"],a:0,e:"Rock side to side to initiate leg movement; consciously think about stepping over a line; lift toes when stepping; remove rugs.",s:"PD S6"},
+ {q:"Which meal plan matches the slides?",o:["6 small meals, food cut small, moderate fiber, protein limited to evening","3 large high-protein meals","Clear liquids only","No fiber"],a:0,e:"Food cut into small pieces; 6 small meals; moderate fiber; limit protein to evening.",s:"PD S6"},
+ {q:"What is the primary drug treatment?",o:["Levodopa with carbidopa (Sinemet)","Anticholinesterase","Interferon","Triptan"],a:0,e:"Levodopa with carbidopa (Sinemet) is the primary treatment. Excessive dopaminergic drugs can lead to paradoxic intoxication.",s:"PD S7"},
+ {q:"As PD progresses, which complication puts the patient at risk of aspiration?",o:["Dysphagia","Lhermitte's sign","Photophobia","Petechiae"],a:0,e:"Complications: dysphagia, malnutrition and aspiration, orthostatic hypotension, falls; dementia occurs in 70%.",s:"PD S8"}
+],
+ms:[
+ {q:"Which symptom is often the FIRST sign of MS?",o:["Vision changes","Pill-rolling tremor","Nuchal rigidity","Cluster headache"],a:0,e:"Vision changes are often the first sign.",s:"MS S4"},
+ {q:"Your MS patient reports an electric shock running down the spine. What is this called?",o:["Lhermitte's sign","Cushing's triad","Aura","Sundowning"],a:0,e:"Lhermitte's sign: electric shock going down the spine.",s:"MS S4"},
+ {q:"Which trigger should your MS patient avoid?",o:["Live virus immunizations","All exercise","Fiber","Rest"],a:0,e:"Triggers: infection, trauma, live virus immunizations, childbirth, stress, climate.",s:"MS S6"},
+ {q:"Which diet teaching matches the slides for MS?",o:["High-fiber diet for constipation; minimize caffeine","High caffeine for fatigue","Low fiber","Protein only in the evening"],a:0,e:"Minimize caffeine intake; nutritious, well-balanced meals; high-fiber diet for constipation.",s:"MS S6"},
+ {q:"Which MS pattern is most common?",o:["Relapsing-remitting (85%)","Primary-progressive","Secondary-progressive","Progressive-relapsing"],a:0,e:"Four patterns; relapsing-remitting is 85%.",s:"MS S3"}
+],
+mg:[
+ {q:"When is your MG patient's muscle strength typically best?",o:["In the morning","In the evening","After exercise","After a heavy meal"],a:0,e:"Muscles strongest in the morning; muscles become exhausted with continued activity.",s:"MS/MG S10"},
+ {q:"Which complication of myasthenic crisis do the slides warn about?",o:["Weakness affecting swallowing and breathing","Loss of sensation","Hyperreflexia","Visual hallucinations"],a:0,e:"Complications occur when muscle weakness affects swallowing and breathing; may need a ventilator. No sensory loss; reflexes normal.",s:"MS/MG S10"},
+ {q:"Which can trigger myasthenic crisis?",o:["Infection, surgery, stress, drugs, pregnancy, corticosteroids","Soft diet","Morning activity","Rest periods"],a:0,e:"Myasthenic crisis is triggered by infection, surgery, stress, drugs, pregnancy, corticosteroids.",s:"MS/MG S10"},
+ {q:"Which diet do the slides recommend for MG?",o:["Balanced/soft, easy to chew and swallow","High-fiber raw vegetables","Protein only in the evening","Clear liquids only"],a:0,e:"Balanced/soft diet (easy to chew and swallow).",s:"MS/MG S11"},
+ {q:"Which drug class do the slides list for MG?",o:["Anticholinesterase","Levodopa/carbidopa","Triptans","Mannitol"],a:0,e:"Medications: anticholinesterase; corticosteroids and immunosuppressants; surgery to remove thymus. Try to balance avoiding a myasthenic or cholinergic crisis.",s:"MS/MG S11"}
+],
+dem:[
+ {q:"A post-op patient becomes confused over a few hours, with disorganized speech and a reversed sleep-wake cycle. Which is most likely?",o:["Delirium","Dementia","Depression","Normal aging"],a:0,e:"Delirium: abrupt onset and progression, hours to weeks, disorganized/distorted thinking, reversed sleep-wake cycle.",s:"Dem S2"},
+ {q:"Which intervention fits a patient with delirium?",o:["Move close to the nurses' station, reorient with clocks and calendars, avoid restraints","Apply restraints for safety","Keep the room dark all day","Limit communication"],a:0,e:"Protect patient from harm: close to nurses' station, sitter, familiar objects, reorientation (clocks, calendars), early mobility, avoid restraints.",s:"Dem S4"},
+ {q:"Your AD patient becomes agitated and aggressive. What do you do?",o:["Redirect, distract, reassure; look for the trigger (pain, frustration, temperature, anxiety)","Threaten consequences","Restrain","Argue to reorient"],a:0,e:"Behaviors respond to a precipitating factor (pain, frustration, temperature extremes, anxiety). Redirection, distraction, reassurance; do not threaten or restrain.",s:"Dem S12"},
+ {q:"Every evening your AD patient becomes more confused. Which intervention fits?",o:["Maximize daylight, calm environment, limit naps and caffeine","More caffeine in the afternoon","Confront the behavior","Longer daytime naps"],a:0,e:"Sundowning: assess cause, quiet calm environment, maximize exposure to daylight, evaluate medications, limit naps and caffeine, avoid confrontation.",s:"Dem S13"},
+ {q:"How is Alzheimer's diagnosed?",o:["By exclusion; no definitive test except post mortem","One blood test","EEG alone","Lumbar puncture alone"],a:0,e:"No definitive diagnostic test exists except post mortem; diagnosed by exclusion.",s:"Dem S9"},
+ {q:"What is the greatest risk factor for Alzheimer's?",o:["Age","Family history","Head trauma","Cardiovascular disease"],a:0,e:"Risk factors include age (greatest), family history, cardiovascular, head trauma. AD is not a normal part of aging.",s:"Dem S5"}
+]};
+
+(function(){
+/* ---------- Tag every block with its nursing-process step ---------- */
+function phaseOf(h){var m=(h.className.match(/\bph\s+([apiexq])\b/)||h.className.match(/\b([apiexq])\b/));return m?m[1]:null;}
+(function(){
+  var phase=null;
+  Array.prototype.forEach.call(document.querySelector('main').children,function(el){
+    if(el.tagName==='H1'){phase=null;return;}
+    if(el.tagName==='H2'){phase=el.classList.contains('ph')?phaseOf(el):null;return;}
+    if(phase)el.classList.add('zone','zone-'+phase);
+  });
+})();
+
+  /* Default: every toggle starts expanded */
+  document.querySelectorAll('main details').forEach(function(d){d.open=true;});
+/* ---------- TOC + sidebar ---------- */
+var toc=document.getElementById('toc'),html='<div class="navhead"><span>Contents</span><button id="sbx" aria-label="Close sidebar">«</button></div>';
+document.querySelectorAll('main h1:not(.title), main h2').forEach(function(h,i){
+  if(!h.id)h.id='s'+i;
+  var c=h.cloneNode(true);c.querySelectorAll('.cite,small,.star').forEach(function(x){x.remove();});
+  var k=h.classList.contains('ph')?' k-'+phaseOf(h):'';
+  html+='<a class="'+h.tagName.toLowerCase()+k+'" href="#'+h.id+'">'+c.textContent.trim()+'</a>';
+});
+toc.innerHTML=html;
+var mq=window.matchMedia('(max-width:860px)'),B=document.body;
+function store(v){try{localStorage.setItem('neuroV2Sidebar',v);}catch(e){}}
+try{if(localStorage.getItem('neuroV2Sidebar')==='hidden')B.classList.add('sbhide');}catch(e){}
+function toggleSB(){if(mq.matches){B.classList.toggle('sbopen');}else{var h=B.classList.toggle('sbhide');store(h?'hidden':'shown');}}
+document.getElementById('sb').onclick=toggleSB;
+document.getElementById('sbx').onclick=toggleSB;
+document.getElementById('sbb').onclick=function(){B.classList.remove('sbopen');};
+toc.addEventListener('click',function(e){if(e.target.tagName==='A'&&mq.matches)B.classList.remove('sbopen');});
+document.addEventListener('keydown',function(e){if(e.key==='Escape')B.classList.remove('sbopen');});
+if(mq.addEventListener)mq.addEventListener('change',function(){B.classList.remove('sbopen');});
+var hl=document.getElementById('hl');
+hl.onclick=function(){var off=B.classList.toggle('nohl');hl.textContent='Highlight: '+(off?'OFF':'ON');hl.classList.toggle('on',!off);};
+document.getElementById('ex').onclick=function(){document.querySelectorAll('main details').forEach(function(d){d.open=true;});};
+document.getElementById('co').onclick=function(){document.querySelectorAll('main details').forEach(function(d){d.open=false;});};
+
+/* ---------- Bedside Check ---------- */
+function shuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;');}
+function renderQuiz(box){
+  var key=box.getAttribute('data-q'),qs=QUIZ[key]||[],right=0,done=0;
+  box.innerHTML='<div class="qhead"><span class="score">'+qs.length+' questions · answer to see the slide rationale</span><button class="rs">↺ Reset</button></div>';
+  var score=box.querySelector('.score');
+  qs.forEach(function(q,qi){
+    var card=document.createElement('div');card.className='qc';
+    var order=shuffle(q.o.map(function(t,i){return {t:t,i:i};}));
+    var h='<div class="qn"><span>Q'+(qi+1)+'.</span>'+esc(q.q)+'</div>';
+    order.forEach(function(o){h+='<button class="op" data-i="'+o.i+'">'+esc(o.t)+'</button>';});
+    h+='<div class="fb"></div>';
+    card.innerHTML=h;
+    card.querySelectorAll('button.op').forEach(function(b){
+      b.onclick=function(){
+        var pick=+b.getAttribute('data-i'),ok=pick===q.a;
+        card.classList.add('done');
+        card.querySelectorAll('button.op').forEach(function(x){x.disabled=true;if(+x.getAttribute('data-i')===q.a)x.classList.add('ok');});
+        if(!ok)b.classList.add('bad');
+        var fb=card.querySelector('.fb');fb.className='fb '+(ok?'ok':'bad');
+        fb.innerHTML='<b>'+(ok?'✓ Correct.':'✗ Not quite.')+'</b> '+esc(q.e)+' <span class="cite">'+esc(q.s)+'</span>';
+        done++;if(ok)right++;
+        score.textContent=right+' / '+done+' correct · '+(qs.length-done)+' left';
+      };
+    });
+    box.appendChild(card);
+  });
+  box.querySelector('.rs').onclick=function(){renderQuiz(box);};
+}
+document.querySelectorAll('.quiz').forEach(renderQuiz);
+
+/* ---------- Mind map (built from the page) ---------- */
+function clean(el){var c=el.cloneNode(true);c.querySelectorAll('.cite,small,.star,.ask').forEach(function(x){x.remove();});var t=c.textContent.replace(/\s+/g,' ').trim();return t.length>52?t.slice(0,50).replace(/[\s,·:;]+$/,'')+'…':t;}
+function buildData(){
+  var root={name:'Neuro Patient Care',children:[]},cur=null,ph=null;
+  var main=document.querySelector('main');
+  Array.prototype.forEach.call(main.children,function(el){
+    if(el.tagName==='H1'&&el.hasAttribute('data-c')){
+      if(el.id==='prio')return (cur=null);
+      cur={name:clean(el),el:el,children:[]};root.children.push(cur);ph=null;return;
+    }
+    if(!cur)return;
+    if(el.tagName==='H2'){ph={name:clean(el),el:el,key:phaseOf(el),children:[]};cur.children.push(ph);return;}
+    var tgt=ph||cur;
+    if(el.tagName==='H3'){tgt.children.push({name:clean(el),el:el});return;}
+    if(el.tagName==='DETAILS'){tgt.children.push({name:clean(el.querySelector('summary')),el:el});return;}
+    if(el.classList.contains('quiz')){tgt.children.push({name:(QUIZ[el.getAttribute('data-q')]||[]).length+' practice questions',el:el});return;}
+    if(el.tagName==='UL'||el.tagName==='OL'){
+      if(tgt.children.some(function(c){return c.el&&c.el.tagName==='H3';}))return;
+      Array.prototype.forEach.call(el.children,function(li){tgt.children.push({name:clean(li),el:li});});return;
+    }
+    if(el.classList.contains('callout')){tgt.children.push({name:clean(el.querySelector('div:last-child')),el:el});}
+  });
+  root.children.forEach(function(c){c.children.forEach(function(p){if(p.children&&!p.children.length)delete p.children;});});
+  return root;
+}
+
+var COLORS=['#787774','#337ea9','#d44c47','#448361','#d9730d','#9065b0','#9f6b53','#c14c8a','#2f8f8f','#b7881f'];
+var overlay=document.getElementById('mmo'),svgEl=document.getElementById('mmsvg');
+var svg,g,root,zoom,selected=null,built=false,uid=0,dx=30;
+var COLX=[0,250,650,940,1240];
+/* Conditions stay neutral; branches take the color of their nursing-process step */
+var PHC={a:'#337ea9',p:'#448361',i:'#9065b0',e:'#d9730d',q:'#e0b100',x:'#c14c8a'};
+function topicColor(d){if(d.depth<=1)return '#37352f';var t=d;while(t.depth>2)t=t.parent;return PHC[t.data.key]||'#9b9a97';}
+function build(){
+  if(typeof d3==='undefined'){document.getElementById('mmPath').textContent='The mind map library could not load. Check your connection and reopen.';return;}
+  built=true;svg=d3.select(svgEl);g=svg.append('g');
+  zoom=d3.zoom().scaleExtent([0.15,2.5]).on('zoom',function(e){g.attr('transform',e.transform);});
+  svg.call(zoom).on('dblclick.zoom',null);
+  root=d3.hierarchy(buildData());
+  root.descendants().forEach(function(d){d.id=++uid;d._children=d.children;});
+  root.x0=0;root.y0=0;root._topics=root.children.slice();
+  topicsOnly();
+}
+function update(src){
+  d3.tree().nodeSize([dx,1])(root);
+  root.each(function(d){d.y=COLX[Math.min(d.depth,4)];});
+  var nodes=root.descendants(),links=root.links(),t=svg.transition().duration(350);
+  var node=g.selectAll('g.mnode').data(nodes,function(d){return d.id;});
+  var enter=node.enter().append('g').attr('class','mnode').attr('transform','translate('+src.y0+','+src.x0+')').attr('opacity',0)
+    .on('click',function(e,d){if(d.children){d._children=d.children;d.children=null;}else if(d._children){d.children=d._children;}select(d);update(d);setTimeout(function(){centerOn(d);},360);});
+  enter.append('circle').attr('r',function(d){return d.depth===0?9:d.depth===1?7:5;});
+  enter.append('text').attr('dy','0.32em');
+  var all=enter.merge(node);
+  all.classed('sel',function(d){return d===selected;});
+  all.select('circle').attr('fill',function(d){return d._children&&!d.children?topicColor(d):'#fff';}).attr('stroke',topicColor);
+  all.select('text').attr('x',function(d){return d.depth===0?-14:12;}).attr('text-anchor',function(d){return d.depth===0?'end':'start';})
+    .style('font-size',function(d){return d.depth===0?'17px':d.depth===1?'15px':'13px';})
+    .style('font-weight',function(d){return d.depth<=1?700:d.depth===2?600:400;})
+    .attr('fill',function(d){return d.depth<=1?topicColor(d):'#37352f';})
+    .text(function(d){return d.data.name+(d._children&&!d.children?'  +':'');});
+  all.transition(t).attr('transform',function(d){return 'translate('+d.y+','+d.x+')';}).attr('opacity',1);
+  node.exit().transition(t).attr('transform','translate('+src.y+','+src.x+')').attr('opacity',0).remove();
+  var diag=d3.linkHorizontal().x(function(d){return d.y;}).y(function(d){return d.x;});
+  var link=g.selectAll('path.mlink').data(links,function(d){return d.target.id;});
+  link.enter().insert('path','g').attr('class','mlink').attr('d',function(){var o={x:src.x0,y:src.y0};return diag({source:o,target:o});})
+    .merge(link).attr('stroke',function(d){return topicColor(d.target);}).transition(t).attr('d',diag);
+  link.exit().transition(t).attr('d',function(){var o={x:src.x,y:src.y};return diag({source:o,target:o});}).remove();
+  root.eachBefore(function(d){d.x0=d.x;d.y0=d.y;});
+}
+function targetEl(d){while(d){if(d.data.el)return d.data.el;d=d.parent;}return null;}
+function select(d){selected=d;document.getElementById('mmPath').textContent=d.ancestors().reverse().map(function(a){return a.data.name;}).join('  ›  ');document.getElementById('mmGo').disabled=!targetEl(d);}
+function collapseAll(d){if(d.children){d._children=d.children;d.children.forEach(collapseAll);d.children=null;}}
+function expandAll(d){if(d._children)d.children=d._children;if(d.children)d.children.forEach(expandAll);}
+function topicsOnly(){root.children=root._children;root.children.forEach(collapseAll);update(root);setTimeout(fit,380);}
+function fit(){var b=g.node().getBBox(),w=svgEl.clientWidth,h=svgEl.clientHeight;if(!b.width||!w)return;var s=Math.min(1.4,0.9/Math.max(b.width/w,b.height/h));svg.transition().duration(400).call(zoom.transform,d3.zoomIdentity.translate(w/2-s*(b.x+b.width/2),h/2-s*(b.y+b.height/2)).scale(s));}
+function centerOn(d){var tr=d3.zoomTransform(svgEl),w=svgEl.clientWidth,h=svgEl.clientHeight,k=tr.k,sx=tr.applyX(d.y),sy=tr.applyY(d.x);if(sx>w*0.12&&sx<w*0.45&&sy>h*0.1&&sy<h*0.9)return;svg.transition().duration(400).call(zoom.transform,d3.zoomIdentity.translate(w*0.25-k*d.y,h/2-k*d.x).scale(k));}
+function search(q){
+  q=q.trim().toLowerCase();if(!q){g.selectAll('g.mnode').classed('hit',false);return;}
+  var hits=[];(function walk(d){var kids=d.children||d._children;if(d.data.name.toLowerCase().indexOf(q)>-1)hits.push(d);if(kids)kids.forEach(walk);})(root);
+  hits.forEach(function(h){var a=h.parent;while(a){if(!a.children&&a._children)a.children=a._children;a=a.parent;}});
+  update(root);g.selectAll('g.mnode').classed('hit',function(d){return hits.indexOf(d)>-1;});
+  document.getElementById('mmPath').textContent=hits.length?hits.length+' match'+(hits.length>1?'es':'')+' for "'+q+'"':'No matches for "'+q+'"';
+  setTimeout(fit,380);
+}
+function open(){overlay.classList.add('show');B.style.overflow='hidden';if(!built)build();else setTimeout(fit,50);}
+function close(){overlay.classList.remove('show');B.style.overflow='';}
+document.getElementById('mm').onclick=open;
+document.getElementById('mmClose').onclick=close;
+document.getElementById('mmTopics').onclick=function(){if(built)topicsOnly();};
+document.getElementById('mmAll').onclick=function(){if(built){expandAll(root);update(root);setTimeout(fit,380);}};
+document.getElementById('mmFit').onclick=function(){if(built)fit();};
+var ft;document.getElementById('mmFind').oninput=function(e){clearTimeout(ft);var v=e.target.value;ft=setTimeout(function(){if(built)search(v);},250);};
+document.getElementById('mmGo').onclick=function(){
+  var el=selected&&targetEl(selected);if(!el)return;close();
+  var p=el;while(p&&p!==document.body){if(p.tagName==='DETAILS')p.open=true;p=p.parentElement;}
+  el.scrollIntoView({behavior:'smooth',block:'start'});
+  el.style.transition='box-shadow .3s';el.style.boxShadow='0 0 0 3px #f2c94c';setTimeout(function(){el.style.boxShadow='';},1800);
+};
+document.addEventListener('keydown',function(e){if(e.key==='Escape'&&overlay.classList.contains('show'))close();});
+})();
+
+</script>
+</body>
+</html>
