@@ -226,6 +226,17 @@ hr.big + h1{margin-top:18px}
 #toTop:hover{background:#000}
 body.sbopen #toTop{opacity:0;pointer-events:none}
 @media print{#toTop{display:none}}
+
+/* ===== Text-only highlighting: color lives in the bold words, not backgrounds ===== */
+main li.gray,main li.brown,main li.orange,main li.yellow,main li.green,main li.blue,main li.purple,main li.pink,main li.red{background:transparent!important;padding:0!important;margin:4px 0!important;border-radius:0}
+main details.tg{background:transparent!important;border:1px solid #e9e9e7;padding:4px 12px}
+main details.tg[open]{border-color:#dcdbd8}
+main .callout.zone,main .callout.red,main .callout.orange{background:transparent!important}
+main .callout.red:not(.zone){border-left:4px solid var(--c-red)}
+main .callout.orange:not(.zone){border-left:4px solid var(--c-orange)}
+main .zone th,main th{background:#f7f6f3!important}
+main .key{background:transparent!important;font-weight:700;padding:0 4px}
+main .quiz button.op:hover:not([disabled]){background:#f7f6f3!important;border-color:#cfcecb!important}
 </style>
 </head>
 <body>
