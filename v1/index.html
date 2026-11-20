@@ -157,6 +157,18 @@ nav a.h1[data-dot]::before{content:"";display:inline-block;width:8px;height:8px;
   .tw td[data-label]:not(:first-child)::before{content:attr(data-label) ": ";font-weight:600;color:var(--muted)}
   table.prio td:last-child,table.prio td:first-child{white-space:normal}
 }
+
+/* ===== Section dividers ===== */
+hr.big{border:0;height:3px;margin:64px 0 0;background:linear-gradient(to right,#37352f 0,#37352f 72px,#e3e2df 72px)}
+hr.big + h1{margin-top:18px}
+/* ===== Back to top ===== */
+#toTop{position:fixed;right:18px;bottom:calc(18px + env(safe-area-inset-bottom,0px));z-index:30;font:inherit;font-size:14px;font-weight:600;
+  background:#37352f;color:#fff;border:0;border-radius:999px;padding:10px 16px;min-height:44px;cursor:pointer;
+  box-shadow:0 4px 14px rgba(0,0,0,.18);opacity:0;transform:translateY(12px);pointer-events:none;transition:opacity .2s,transform .2s}
+#toTop.show{opacity:1;transform:none;pointer-events:auto}
+#toTop:hover{background:#000}
+body.sbopen #toTop{opacity:0;pointer-events:none}
+@media print{#toTop{display:none}}
 </style>
 </head>
 <body>
@@ -169,8 +181,8 @@ nav a.h1[data-dot]::before{content:"";display:inline-block;width:8px;height:8px;
 <button id="sb" aria-label="Toggle contents sidebar">☰ Contents</button>
 <button id="mm" style="font-weight:600">🧠 Mind Map</button>
 <button id="hl" class="on">Highlight: ON</button>
-<button id="ex">Expand all toggles</button>
-<button id="co">Collapse all toggles</button>
+<button id="ex">Expand all</button>
+<button id="co">Collapse all</button>
 </div>
 
 <h1 class="title" style="margin-top:8px">🧠 Neuro Exam Review <span class="lg" style="font-size:.5em;color:var(--muted);font-weight:600;vertical-align:middle">v1 · legacy</span></h1>
@@ -182,6 +194,7 @@ nav a.h1[data-dot]::before{content:"";display:inline-block;width:8px;height:8px;
 </div></div>
 
 <!-- ===================== 1 ===================== -->
+<hr class="big">
 <h1 id="found">1. Neuro Foundations: Cranial Nerves &amp; IICP (10 concepts)</h1>
 
 <h2>Cranial Nerves (12)</h2>
@@ -281,6 +294,7 @@ nav a.h1[data-dot]::before{content:"";display:inline-block;width:8px;height:8px;
 <ul class="nb"><li class="gray"><b>Goals:</b> patent airway · ICP within normal limits · normal fluid/electrolytes · no immobility complications. <b>Outcomes:</b> ICP &amp; CPP normal; no spikes during care</li></ul>
 
 <!-- ===================== 2 ===================== -->
+<hr class="big">
 <h1 id="stroke">2. Stroke (12 concepts)</h1>
 <ul class="nb"><li class="blue">Stroke = <b class="r">ischemia or hemorrhage</b> into the brain → <b class="b">death of brain cells</b>. Also called brain attack or CVA</li></ul>
 
@@ -386,6 +400,7 @@ Monitor closely for <b>24 hrs</b> · <b>Aspirin 24–48 hrs after</b> · anticoa
 <ul class="nb"><li class="green">↓ sodium · normal weight · low saturated fat · limit alcohol · <b class="g">SBP &lt; 140</b> · <b class="b">exercise 150 min/week</b> · no smoking · control DM · cardiac meds · <b>antiplatelets</b>; <b>anticoagulants for A-fib</b> · left atrial appendage occlusion · surgical prevention</li></ul>
 
 <!-- ===================== 3 ===================== -->
+<hr class="big">
 <h1 id="mening">3. Meningitis &amp; Encephalitis (5 concepts)</h1>
 
 <h2>Bacterial Meningitis</h2>
@@ -426,6 +441,7 @@ Monitor closely for <b>24 hrs</b> · <b>Aspirin 24–48 hrs after</b> · anticoa
 </ul>
 
 <!-- ===================== 4 ===================== -->
+<hr class="big">
 <h1 id="seiz">4. Seizures (9 concepts)</h1>
 <ul class="nb">
 <li class="blue">Seizure = <b class="b">sudden, abnormal, excessive electrical discharge</b> of brain neurons</li>
@@ -489,6 +505,7 @@ Monitor closely for <b>24 hrs</b> · <b>Aspirin 24–48 hrs after</b> · anticoa
 </ul>
 
 <!-- ===================== 5 ===================== -->
+<hr class="big">
 <h1 id="head">5. Headaches (6 concepts)</h1>
 <ul class="nb">
 <li class="blue"><b class="b">Primary</b> (most common, functional): <b>migraine, tension-type, cluster</b></li>
@@ -521,6 +538,7 @@ Monitor closely for <b>24 hrs</b> · <b>Aspirin 24–48 hrs after</b> · anticoa
 <details class="tg purple"><summary><b class="r">Cluster drugs</b></summary><div><b>Triptans</b> standard · <b class="b">100% O₂ at 7–12 L/min for 20 min</b> · preventive therapy</div></details>
 
 <!-- ===================== 6 ===================== -->
+<hr class="big">
 <h1 id="pd">6. Parkinson's Disease (6 concepts)</h1>
 <ul class="nb">
 <li class="blue">Disease of the <b class="b">basal ganglia</b>: chronic, progressive, neurodegenerative, <b>no acute exacerbations</b></li>
@@ -549,6 +567,7 @@ Monitor closely for <b>24 hrs</b> · <b>Aspirin 24–48 hrs after</b> · anticoa
 </ul>
 
 <!-- ===================== 7 ===================== -->
+<hr class="big">
 <h1 id="msmg">7. Multiple Sclerosis &amp; Myasthenia Gravis (8 concepts)</h1>
 <h2>Multiple Sclerosis (MS)</h2>
 <ul class="nb">
@@ -577,6 +596,7 @@ Monitor closely for <b>24 hrs</b> · <b>Aspirin 24–48 hrs after</b> · anticoa
 <ul class="nb"><li class="blue">Nursing: usually hospitalized for <b>respiratory infection or crisis</b> · drug teaching &amp; contraindications · recognize crisis · <b>soft, easy-to-chew diet</b> · Collaborative: <b>thymectomy</b>, <b class="b">anticholinesterase</b>, corticosteroids, immunosuppressants</li></ul>
 
 <!-- ===================== 8 ===================== -->
+<hr class="big">
 <h1 id="dem">8. Delirium, Dementia &amp; Alzheimer's (9 concepts)</h1>
 <h2>Dementia vs Delirium vs Depression</h2>
 <div class="tw"><table>
@@ -625,6 +645,7 @@ Monitor closely for <b>24 hrs</b> · <b>Aspirin 24–48 hrs after</b> · anticoa
 </ul>
 
 <!-- ===================== 9 ===================== -->
+<hr class="big">
 <h1 id="compare">9. Cross-Topic Comparisons (6 concepts)</h1>
 <p class="src">Facts from different decks lined up side by side. Exam questions often test these differences.</p>
 
@@ -689,6 +710,7 @@ Monitor closely for <b>24 hrs</b> · <b>Aspirin 24–48 hrs after</b> · anticoa
 </table></div>
 
 <!-- ===================== 10 ===================== -->
+<hr class="big">
 <h1 id="meds">10. Medication Master List</h1>
 <div class="tw"><table>
 <tr><th>Drug / class</th><th>Used for</th><th>Key point</th></tr>
@@ -713,6 +735,7 @@ Monitor closely for <b>24 hrs</b> · <b>Aspirin 24–48 hrs after</b> · anticoa
 
 <p class="src" style="margin-top:40px">Sources: Cranial Nerves Summary Chart.docx · Neuro IICP.pptx · Stroke.pptx · Meningitis.Encephalitis.pptx · Chronic Neuro Seizures · Headaches · Parkinson's · MS/MG · Dementia.pptx</p>
 </main>
+<button id="toTop" aria-label="Back to top">↑ Top</button>
 </div>
 
 <div id="mmo">
@@ -991,6 +1014,15 @@ document.querySelectorAll('.tw table').forEach(function(t){
     Array.prototype.forEach.call(r.children,function(c,i){if(heads[i])c.setAttribute('data-label',heads[i]);});
   });
 });
+</script>
+
+<script>
+(function(){
+  var b=document.getElementById('toTop');
+  function onScroll(){b.classList.toggle('show',(window.scrollY||document.documentElement.scrollTop)>600);}
+  window.addEventListener('scroll',onScroll,{passive:true});onScroll();
+  b.onclick=function(){window.scrollTo({top:0,behavior:'smooth'});};
+})();
 </script>
 </body>
 </html>

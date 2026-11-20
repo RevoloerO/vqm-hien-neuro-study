@@ -214,6 +214,18 @@ main h1,main h2,main h3,main li,main details,main .callout,main .quiz{scroll-mar
   .tw td[data-label]:not(:first-child)::before{content:attr(data-label) ": ";font-weight:600;color:var(--muted)}
   table.prio td:last-child,table.prio td:first-child{white-space:normal}
 }
+
+/* ===== Section dividers ===== */
+hr.big{border:0;height:3px;margin:64px 0 0;background:linear-gradient(to right,#37352f 0,#37352f 72px,#e3e2df 72px)}
+hr.big + h1{margin-top:18px}
+/* ===== Back to top ===== */
+#toTop{position:fixed;right:18px;bottom:calc(18px + env(safe-area-inset-bottom,0px));z-index:30;font:inherit;font-size:14px;font-weight:600;
+  background:#37352f;color:#fff;border:0;border-radius:999px;padding:10px 16px;min-height:44px;cursor:pointer;
+  box-shadow:0 4px 14px rgba(0,0,0,.18);opacity:0;transform:translateY(12px);pointer-events:none;transition:opacity .2s,transform .2s}
+#toTop.show{opacity:1;transform:none;pointer-events:auto}
+#toTop:hover{background:#000}
+body.sbopen #toTop{opacity:0;pointer-events:none}
+@media print{#toTop{display:none}}
 </style>
 </head>
 <body>
@@ -226,8 +238,8 @@ main h1,main h2,main h3,main li,main details,main .callout,main .quiz{scroll-mar
 <button id="sb" aria-label="Toggle contents sidebar">☰ Contents</button>
 <button id="mm" style="font-weight:600">Mind Map</button>
 <button id="hl" class="on">Highlight: ON</button>
-<button id="ex">Expand all toggles</button>
-<button id="co">Collapse all toggles</button>
+<button id="ex">Expand all</button>
+<button id="co">Collapse all</button>
 </div>
 <h1 class="title">Neuro Patient Care Review <span class="ver">v2</span></h1>
 <p class="sub">Built only from the 9 course files. Each condition follows the professor's nursing process: <b>Assess → Plan → Implement → Evaluate</b>. Every item shows its slide number, e.g. <span class="cite">S17</span>.</p>
@@ -240,6 +252,7 @@ main h1,main h2,main h3,main li,main details,main .callout,main .quiz{scroll-mar
 </div></div>
 
 <!-- ============ PRIORITIES ============ -->
+<hr class="big">
 <h1 id="prio" data-c>Professor's Priorities</h1>
 <p class="src">Every point the slides mark as priority, first, late, emergency, most common, or never, collected in one place.</p>
 <div class="tw"><table class="prio">
@@ -278,6 +291,7 @@ IICP S9 · IICP S10 (Abnormal Respiratory Patterns of Coma) · IICP S15 · Strok
 </div></details>
 
 <!-- ============ TOOLKIT ============ -->
+<hr class="big">
 <h1 id="tool" data-c>Neuro Assessment Toolkit</h1>
 <div class="pt">Assessment tools that appear in the slides: the cranial nerve chart and the scales named in the IICP, Stroke and Dementia decks.</div>
 
@@ -305,6 +319,7 @@ IICP S9 · IICP S10 (Abnormal Respiratory Patterns of Coma) · IICP S15 · Strok
 </ul>
 
 <!-- ============ IICP ============ -->
+<hr class="big">
 <h1 id="iicp" data-c>Increased Intracranial Pressure <small>Neuro IICP.pptx</small></h1>
 <div class="pt"><b>Your patient:</b> ICP has risen from a change in <b>brain tissue, blood, or CSF</b>. Under Monro-Kellie, if one increases, another must decrease to maintain ICP <span class="cite">S2</span></div>
 
@@ -357,6 +372,7 @@ IICP S9 · IICP S10 (Abnormal Respiratory Patterns of Coma) · IICP S15 · Strok
 <div class="quiz" data-q="iicp"></div>
 
 <!-- ============ STROKE ============ -->
+<hr class="big">
 <h1 id="stroke" data-c>Stroke <small>Stroke.pptx</small></h1>
 <div class="pt"><b>Your patient:</b> ischemia or hemorrhage into the brain has caused death of brain cells (brain attack, CVA) <span class="cite">S2</span></div>
 
@@ -438,6 +454,7 @@ IICP S9 · IICP S10 (Abnormal Respiratory Patterns of Coma) · IICP S15 · Strok
 <div class="quiz" data-q="stroke"></div>
 
 <!-- ============ MENINGITIS ============ -->
+<hr class="big">
 <h1 id="men" data-c>Meningitis &amp; Encephalitis <small>Meningitis.Encephalitis.pptx</small></h1>
 <div class="pt"><b>Your patient:</b> acute inflammation of the meningeal tissue around the brain and spinal cord (meningitis) or of the brain itself (encephalitis) <span class="cite">S2, S9</span></div>
 
@@ -485,6 +502,7 @@ IICP S9 · IICP S10 (Abnormal Respiratory Patterns of Coma) · IICP S15 · Strok
 <div class="quiz" data-q="men"></div>
 
 <!-- ============ SEIZURES ============ -->
+<hr class="big">
 <h1 id="seiz" data-c>Seizures <small>Chronic Neuro seizures.pptx</small></h1>
 <div class="pt"><b>Your patient:</b> sudden, abnormal, excessive electrical discharge of neurons in the brain <span class="cite">S2</span>. Seizure disorder/epilepsy = <b>2 or more seizures more than 24 hours apart</b> without an underlying problem <span class="cite">S3</span></div>
 
@@ -543,6 +561,7 @@ IICP S9 · IICP S10 (Abnormal Respiratory Patterns of Coma) · IICP S15 · Strok
 <div class="quiz" data-q="seiz"></div>
 
 <!-- ============ HEADACHES ============ -->
+<hr class="big">
 <h1 id="ha" data-c>Headaches <small>Chronic Neuro Headaches.pptx</small></h1>
 <div class="pt"><b>Your patient:</b> probably the most common pain humans experience. Most are <b>primary</b> (migraine, tension-type, cluster); <b>secondary</b> headaches come from another condition (sinus infection, neck injury, stroke) <span class="cite">S2</span></div>
 
@@ -576,6 +595,7 @@ IICP S9 · IICP S10 (Abnormal Respiratory Patterns of Coma) · IICP S15 · Strok
 <div class="quiz" data-q="ha"></div>
 
 <!-- ============ PARKINSON ============ -->
+<hr class="big">
 <h1 id="pd" data-c>Parkinson's Disease <small>Chronic Neuro Parkinsons.pptx</small></h1>
 <div class="pt"><b>Your patient:</b> disease of the basal ganglia; chronic, progressive, neurodegenerative, <b>no acute exacerbations</b>. Lack of dopamine disrupts the dopamine–acetylcholine balance <span class="cite">S2–3</span></div>
 
@@ -612,6 +632,7 @@ IICP S9 · IICP S10 (Abnormal Respiratory Patterns of Coma) · IICP S15 · Strok
 <div class="quiz" data-q="pd"></div>
 
 <!-- ============ MS ============ -->
+<hr class="big">
 <h1 id="ms" data-c>Multiple Sclerosis <small>Chronic Neuro MS.MG.pptx</small></h1>
 <div class="pt"><b>Your patient:</b> chronic, progressive, degenerative CNS disorder: <b>segmental demyelination</b> of nerve fibers of brain and spinal cord <span class="cite">S2</span>. Onset 20–40 yrs; <b>women 2–3× more</b>; more in temperate climates <span class="cite">S3</span></div>
 
@@ -646,6 +667,7 @@ IICP S9 · IICP S10 (Abnormal Respiratory Patterns of Coma) · IICP S15 · Strok
 <div class="quiz" data-q="ms"></div>
 
 <!-- ============ MG ============ -->
+<hr class="big">
 <h1 id="mg" data-c>Myasthenia Gravis <small>Chronic Neuro MS.MG.pptx</small></h1>
 <div class="pt"><b>Your patient:</b> autoimmune disease of the <b>neuromuscular junction</b>; fluctuating weakness of skeletal muscle; may respond to removal of the thymus <span class="cite">S9</span></div>
 
@@ -671,6 +693,7 @@ IICP S9 · IICP S10 (Abnormal Respiratory Patterns of Coma) · IICP S15 · Strok
 <div class="quiz" data-q="mg"></div>
 
 <!-- ============ DEMENTIA ============ -->
+<hr class="big">
 <h1 id="dem" data-c>Delirium, Dementia &amp; Alzheimer's <small>Dementia.pptx</small></h1>
 <div class="pt"><b>Your patient:</b> confused. First decide whether this is <b>delirium, dementia, or depression</b> <span class="cite">S2</span></div>
 
@@ -719,6 +742,7 @@ IICP S9 · IICP S10 (Abnormal Respiratory Patterns of Coma) · IICP S15 · Strok
 <p class="src" style="margin-top:40px">Sources: Cranial Nerves Summary Chart.docx · Neruo IICP.pptx · Stroke.pptx · Meningitis.Encephalitis.pptx · Chronic Neuro seizures-1.pptx · Chronic Neuro Headaches-1.pptx · Chronic Neuro Parkinsons-1.pptx · Chronic Neuro MS-1.MG.pptx · Dementia.pptx. Slide numbers <span class="cite">S#</span> refer to the deck named in each section heading.</p>
 
 </main>
+<button id="toTop" aria-label="Back to top">↑ Top</button>
 </div>
 
 <div id="mmo">
@@ -998,6 +1022,15 @@ document.querySelectorAll('.tw table').forEach(function(t){
     Array.prototype.forEach.call(r.children,function(c,i){if(heads[i])c.setAttribute('data-label',heads[i]);});
   });
 });
+</script>
+
+<script>
+(function(){
+  var b=document.getElementById('toTop');
+  function onScroll(){b.classList.toggle('show',(window.scrollY||document.documentElement.scrollTop)>600);}
+  window.addEventListener('scroll',onScroll,{passive:true});onScroll();
+  b.onclick=function(){window.scrollTo({top:0,behavior:'smooth'});};
+})();
 </script>
 </body>
 </html>
