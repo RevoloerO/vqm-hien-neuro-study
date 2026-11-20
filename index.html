@@ -192,6 +192,28 @@ main h1,main h2,main h3,main li,main details,main .callout,main .quiz{scroll-mar
 .vsw a{font-size:13.5px;padding:5px 12px;text-decoration:none;color:#37352f;background:#fff;font-weight:600;line-height:1.5}
 .vsw a.cur{background:#37352f;color:#fff;pointer-events:none}
 .vsw a:not(.cur):hover{background:#f1f1ef}
+
+/* ===== Mobile polish ===== */
+@media (max-width:860px){
+  .cite{font-size:11px!important}
+  .star{font-size:11px!important}
+  .add{font-size:12px!important}
+  #sbx{min-width:40px;min-height:40px;font-size:22px}
+  .qhead button{min-height:38px;padding:6px 14px}
+  .vsw a{padding:8px 12px}
+  h1.title .lg{white-space:nowrap}
+}
+/* Tables become one card per row on narrow screens */
+@media (max-width:640px){
+  .tw{overflow:visible}
+  .tw table,.tw tbody,.tw tr,.tw td{display:block;width:auto!important;min-width:0!important}
+  .tw tr:first-child{display:none}
+  .tw tr{border:1px solid var(--line);border-radius:8px;margin:10px 0;padding:8px 12px}
+  .tw td{border:0;padding:3px 0}
+  .tw td:first-child{font-weight:700;border-bottom:1px solid var(--line);padding-bottom:6px;margin-bottom:4px}
+  .tw td[data-label]:not(:first-child)::before{content:attr(data-label) ": ";font-weight:600;color:var(--muted)}
+  table.prio td:last-child,table.prio td:first-child{white-space:normal}
+}
 </style>
 </head>
 <body>
@@ -710,10 +732,10 @@ IICP S9 · IICP S10 (Abnormal Respiratory Patterns of Coma) · IICP S15 · Strok
 <button id="mmClose">✕ Close</button>
 </div>
 <svg id="mmsvg"></svg>
-<div id="mminfo"><span class="path" id="mmPath">Click a node to expand or collapse it. Drag to move the map, scroll to zoom.</span><button id="mmGo" disabled>Open in guide ↗</button></div>
+<div id="mminfo"><span class="path" id="mmPath">Tap a node to expand or collapse it. Drag to move; pinch or scroll to zoom.</span><button id="mmGo" disabled>Open in guide ↗</button></div>
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+<script src="assets/d3.min.js"></script>
 <script>
 /* Bedside Check: every answer and explanation comes from the cited slide. */
 var QUIZ={
@@ -965,6 +987,17 @@ document.getElementById('mmGo').onclick=function(){
 document.addEventListener('keydown',function(e){if(e.key==='Escape'&&overlay.classList.contains('show'))close();});
 })();
 
+</script>
+
+<script>
+/* Label each table cell with its column header (used by the stacked phone layout) */
+document.querySelectorAll('.tw table').forEach(function(t){
+  var rows=t.querySelectorAll('tr');if(!rows.length)return;
+  var heads=Array.prototype.map.call(rows[0].children,function(c){return c.textContent.trim();});
+  Array.prototype.slice.call(rows,1).forEach(function(r){
+    Array.prototype.forEach.call(r.children,function(c,i){if(heads[i])c.setAttribute('data-label',heads[i]);});
+  });
+});
 </script>
 </body>
 </html>

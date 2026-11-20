@@ -135,6 +135,28 @@ nav a.h1[data-dot]::before{content:"";display:inline-block;width:8px;height:8px;
 .vsw a{font-size:13.5px;padding:5px 12px;text-decoration:none;color:#37352f;background:#fff;font-weight:600;line-height:1.5}
 .vsw a.cur{background:#37352f;color:#fff;pointer-events:none}
 .vsw a:not(.cur):hover{background:#f1f1ef}
+
+/* ===== Mobile polish ===== */
+@media (max-width:860px){
+  .cite{font-size:11px!important}
+  .star{font-size:11px!important}
+  .add{font-size:12px!important}
+  #sbx{min-width:40px;min-height:40px;font-size:22px}
+  .qhead button{min-height:38px;padding:6px 14px}
+  .vsw a{padding:8px 12px}
+  h1.title .lg{white-space:nowrap}
+}
+/* Tables become one card per row on narrow screens */
+@media (max-width:640px){
+  .tw{overflow:visible}
+  .tw table,.tw tbody,.tw tr,.tw td{display:block;width:auto!important;min-width:0!important}
+  .tw tr:first-child{display:none}
+  .tw tr{border:1px solid var(--line);border-radius:8px;margin:10px 0;padding:8px 12px}
+  .tw td{border:0;padding:3px 0}
+  .tw td:first-child{font-weight:700;border-bottom:1px solid var(--line);padding-bottom:6px;margin-bottom:4px}
+  .tw td[data-label]:not(:first-child)::before{content:attr(data-label) ": ";font-weight:600;color:var(--muted)}
+  table.prio td:last-child,table.prio td:first-child{white-space:normal}
+}
 </style>
 </head>
 <body>
@@ -151,7 +173,7 @@ nav a.h1[data-dot]::before{content:"";display:inline-block;width:8px;height:8px;
 <button id="co">Collapse all toggles</button>
 </div>
 
-<h1 class="title" style="margin-top:8px">🧠 Neuro Exam Review <span style="font-size:.5em;color:var(--muted);font-weight:600;vertical-align:middle">v1 · legacy</span></h1>
+<h1 class="title" style="margin-top:8px">🧠 Neuro Exam Review <span class="lg" style="font-size:.5em;color:var(--muted);font-weight:600;vertical-align:middle">v1 · legacy</span></h1>
 <p class="sub">Built from all 9 course files: Cranial Nerves chart, IICP, Stroke, Meningitis/Encephalitis, Seizures, Headaches, Parkinson's, MS/MG, Delirium/Dementia/Alzheimer's</p>
 
 <div class="callout gray"><div class="ic">📌</div><div>
@@ -704,10 +726,10 @@ Monitor closely for <b>24 hrs</b> · <b>Aspirin 24–48 hrs after</b> · anticoa
 <button id="mmClose">✕ Close</button>
 </div>
 <svg id="mmsvg"></svg>
-<div id="mminfo"><span class="path" id="mmPath">Click a node to expand or collapse it. Drag to move the map, scroll to zoom.</span><button id="mmGo" disabled>Open in guide ↗</button></div>
+<div id="mminfo"><span class="path" id="mmPath">Tap a node to expand or collapse it. Drag to move; pinch or scroll to zoom.</span><button id="mmGo" disabled>Open in guide ↗</button></div>
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+<script src="../assets/d3.min.js"></script>
 <script>
 (function(){
 /* n(label, sectionHeadingPrefix, children) */
@@ -958,6 +980,17 @@ document.addEventListener('keydown',function(e){if(e.key==='Escape'&&overlay.cla
   document.getElementById('ex').onclick=function(){document.querySelectorAll('details').forEach(function(d){d.open=true});};
   document.getElementById('co').onclick=function(){document.querySelectorAll('details').forEach(function(d){d.open=false});};
 })();
+</script>
+
+<script>
+/* Label each table cell with its column header (used by the stacked phone layout) */
+document.querySelectorAll('.tw table').forEach(function(t){
+  var rows=t.querySelectorAll('tr');if(!rows.length)return;
+  var heads=Array.prototype.map.call(rows[0].children,function(c){return c.textContent.trim();});
+  Array.prototype.slice.call(rows,1).forEach(function(r){
+    Array.prototype.forEach.call(r.children,function(c,i){if(heads[i])c.setAttribute('data-label',heads[i]);});
+  });
+});
 </script>
 </body>
 </html>
