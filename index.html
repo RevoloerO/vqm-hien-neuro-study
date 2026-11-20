@@ -187,6 +187,11 @@ body:not(.nohl) .quiz.zone .qn span{color:#c14c8a}
 body:not(.nohl) .quiz.zone button.op:hover:not([disabled]){background:#f9eef3;border-color:#e8bcd3}
 
 main h1,main h2,main h3,main li,main details,main .callout,main .quiz{scroll-margin-top:64px}
+
+.vsw{display:inline-flex;flex:0 0 auto;border:1px solid #37352f;border-radius:7px;overflow:hidden}
+.vsw a{font-size:13.5px;padding:5px 12px;text-decoration:none;color:#37352f;background:#fff;font-weight:600;line-height:1.5}
+.vsw a.cur{background:#37352f;color:#fff;pointer-events:none}
+.vsw a:not(.cur):hover{background:#f1f1ef}
 </style>
 </head>
 <body>
@@ -195,12 +200,12 @@ main h1,main h2,main h3,main li,main details,main .callout,main .quiz{scroll-mar
 <div id="sbb"></div>
 <main>
 <div class="toolbar">
+<span class="vsw" role="group" aria-label="Version"><a href="v1/" class="" title="v1: topic review">v1 · Topics</a><a href="./" class="cur" title="v2: patient care">v2 · Patient care</a></span>
 <button id="sb" aria-label="Toggle contents sidebar">☰ Contents</button>
 <button id="mm" style="font-weight:600">Mind Map</button>
 <button id="hl" class="on">Highlight: ON</button>
 <button id="ex">Expand all toggles</button>
 <button id="co">Collapse all toggles</button>
-<a href="v1/" style="flex:0 0 auto;font-size:13.5px;border:1px solid #e9e9e7;border-radius:6px;padding:5px 11px;color:#37352f;text-decoration:none;background:#f7f6f3">Switch to v1 · topic review →</a>
 </div>
 <h1 class="title">Neuro Patient Care Review <span class="ver">v2</span></h1>
 <p class="sub">Built only from the 9 course files. Each condition follows the professor's nursing process: <b>Assess → Plan → Implement → Evaluate</b>. Every item shows its slide number, e.g. <span class="cite">S17</span>.</p>
